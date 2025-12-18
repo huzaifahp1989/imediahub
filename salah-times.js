@@ -270,53 +270,59 @@ function updateMosqueTimes() {
     const mosqueId = document.getElementById('mosqueSelect').value;
     const city = document.getElementById('citySelect').value;
     
-    // If general or not Leicester, reload times
-    if (city !== 'Leicester' || mosqueId === 'general') {
-        getTimesForCity();
-        return;
-    }
+    console.log(`Mosque selected: ${mosqueId}, City: ${city}`);
     
-    // Apply mosque adjustments
-    const mosque = leicesterMosques[mosqueId];
-    if (!mosque) {
-        getTimesForCity();
-        return;
-    }
-    
-    // If we don't have current timings yet, fetch them first
-    if (!currentTimings) {
-        getTimesForCity();
-        setTimeout(() => {
-            applyMosqueAdjustments(mosque, mosqueId);
-        }, 500);
+    // If Leicester and a specific mosque is selected
+    if (city === 'Leicester' && mosqueId !== 'general' && leicesterMosques[mosqueId]) {
+        const mosque = leicesterMosques[mosqueId];
+        console.log(`Loading mosque times for: ${mosque.name}`);
+        displayMosquePrayerTimes(mosque);
     } else {
-        applyMosqueAdjustments(mosque, mosqueId);
+        // Load general Leicester times from API
+        console.log('Loading general Leicester times');
+        getTimesForCity();
     }
 }
 
-// Apply mosque prayer time adjustments
-function applyMosqueAdjustments(mosque, mosqueId) {
-    if (!mosque || !mosque.times) return;
+// Display mosque prayer times directly
+function displayMosquePrayerTimes(mosque) {
+    if (!mosque || !mosque.times) {
+        console.error('Mosque data invalid');
+        return;
+    }
     
-    console.log(`Applying prayer times for ${mosque.name}`);
+    console.log(`Displaying times for ${mosque.name}`);
     
-    // Use hardcoded mosque times instead of API times
-    const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-    prayers.forEach(prayer => {
-        const prayerElement = document.querySelector(`[data-prayer="${prayer}"] .prayer-time-value`);
-        if (prayerElement && mosque.times[prayer]) {
-            // Display jamaat time for mosques, start time as secondary
-            const jamaat = mosque.times[prayer].jamaat;
-            prayerElement.textContent = formatTime(jamaat);
-            console.log(`${prayer}: ${jamaat} (Jamaat Time)`);
+    // Update location
+    document.getElementById('locationName').textContent = `${mosque.name}, Leicester`;
+    
+    // Update date
+    const today = new Date();
+    const dateStr = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    document.getElementById('currentDate').textContent = dateStr;
+    
+    // Update prayer times - display jamaat times
+    const prayerOrder = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+    prayerOrder.forEach(prayer => {
+        const element = document.querySelector(`[data-prayer="${prayer}"] .prayer-time-value`);
+        if (element && mosque.times[prayer]) {
+            const jamaatTime = mosque.times[prayer].jamaat;
+            element.textContent = formatTime(jamaatTime);
+            console.log(`${prayer}: ${formatTime(jamaatTime)}`);
         }
     });
     
-    // Update location name to show mosque
-    document.getElementById('locationName').textContent = `${mosque.name}, Leicester`;
+    // Store times for next prayer calculation
+    currentTimings = {};
+    prayerOrder.forEach(prayer => {
+        currentTimings[prayer] = mosque.times[prayer].jamaat;
+    });
     
-    // Show prayer times if not visible
+    // Show prayer times card
     document.getElementById('prayerTimesCard').style.display = 'block';
+    
+    // Highlight current prayer
+    highlightCurrentPrayer();
 }
 
 // Adjust prayer time by minutes
@@ -352,12 +358,20 @@ function getTimesForCity() {
 document.addEventListener('DOMContentLoaded', () => {
     // Set Leicester as default city
     document.getElementById('citySelect').value = 'Leicester';
-    // Hanafi is already set as default in HTML (option selected)
     // MWL is already set as default in HTML (option selected)
+    // Hanafi is already set as default in HTML (option selected)
     
     // Show mosque selector for Leicester
     toggleMosqueSelector();
     
-    // Load Leicester prayer times
-    getTimesForCity();
+    // Load default mosque (Jame Masjid)
+    const mosqueSelect = document.getElementById('mosqueSelect');
+    if (mosqueSelect) {
+        mosqueSelect.value = 'jame-masjid';
+        // Display the mosque times immediately
+        const mosque = leicesterMosques['jame-masjid'];
+        if (mosque) {
+            displayMosquePrayerTimes(mosque);
+        }
+    }
 });
