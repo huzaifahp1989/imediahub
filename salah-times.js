@@ -270,28 +270,31 @@ function updateMosqueTimes() {
     const mosqueId = document.getElementById('mosqueSelect').value;
     const city = document.getElementById('citySelect').value;
     
-    console.log(`Mosque selected: ${mosqueId}, City: ${city}`);
+    console.log(`🕌 Mosque Update - Selected: ${mosqueId}, City: ${city}`);
     
-    // If Leicester and a specific mosque is selected
-    if (city === 'Leicester' && mosqueId !== 'general' && leicesterMosques[mosqueId]) {
+    // Only show mosque times if Leicester is selected and a specific mosque chosen
+    if (city === 'Leicester' && mosqueId && mosqueId !== 'general') {
         const mosque = leicesterMosques[mosqueId];
-        console.log(`Loading mosque times for: ${mosque.name}`);
-        displayMosquePrayerTimes(mosque);
-    } else {
-        // Load general Leicester times from API
-        console.log('Loading general Leicester times');
-        getTimesForCity();
+        if (mosque) {
+            console.log(`✅ Displaying ${mosque.name}`);
+            displayMosquePrayerTimes(mosque);
+            return;
+        }
     }
+    
+    // Otherwise load general city times
+    console.log('📍 Loading general city times');
+    getTimesForCity();
 }
 
 // Display mosque prayer times directly
 function displayMosquePrayerTimes(mosque) {
     if (!mosque || !mosque.times) {
-        console.error('Mosque data invalid');
+        console.error('❌ Invalid mosque data');
         return;
     }
     
-    console.log(`Displaying times for ${mosque.name}`);
+    console.log(`📖 Displaying prayer times for ${mosque.name}`);
     
     // Update location
     document.getElementById('locationName').textContent = `${mosque.name}, Leicester`;
@@ -308,7 +311,7 @@ function displayMosquePrayerTimes(mosque) {
         if (element && mosque.times[prayer]) {
             const jamaatTime = mosque.times[prayer].jamaat;
             element.textContent = formatTime(jamaatTime);
-            console.log(`${prayer}: ${formatTime(jamaatTime)}`);
+            console.log(`  ${prayer}: ${formatTime(jamaatTime)}`);
         }
     });
     
@@ -323,6 +326,9 @@ function displayMosquePrayerTimes(mosque) {
     
     // Highlight current prayer
     highlightCurrentPrayer();
+    
+    // Update next prayer info
+    updateNextPrayerInfo();
 }
 
 // Adjust prayer time by minutes
@@ -334,44 +340,56 @@ function adjustPrayerTime(time24, minutes) {
     return `${String(newHours).padStart(2, '0')}:${String(newMins).padStart(2, '0')}`;
 }
 
-// Toggle mosque selector visibility based on city
-function toggleMosqueSelector() {
+// Handle city change
+function onCityChange() {
     const city = document.getElementById('citySelect').value;
-    const mosqueSelector = document.getElementById('mosqueSelector');
-    if (mosqueSelector) {
-        if (city === 'Leicester') {
-            mosqueSelector.style.display = 'block';
-        } else {
-            mosqueSelector.style.display = 'none';
-        }
-    }
-}
-
-// Update getTimesForCity to handle mosque selector
-const originalGetTimesForCity = getTimesForCity;
-function getTimesForCity() {
-    toggleMosqueSelector();
-    originalGetTimesForCity();
-}
-
-// Initialize with Leicester by default (Hanafi method)
-document.addEventListener('DOMContentLoaded', () => {
-    // Set Leicester as default city
-    document.getElementById('citySelect').value = 'Leicester';
-    // MWL is already set as default in HTML (option selected)
-    // Hanafi is already set as default in HTML (option selected)
-    
-    // Show mosque selector for Leicester
-    toggleMosqueSelector();
-    
-    // Load default mosque (Jame Masjid)
     const mosqueSelect = document.getElementById('mosqueSelect');
-    if (mosqueSelect) {
+    
+    console.log(`🏙️ City changed to: ${city}`);
+    
+    // Show/hide mosque selector
+    if (city === 'Leicester' && mosqueSelect) {
+        document.getElementById('mosqueSelector').style.display = 'block';
+        // Reset to first mosque
         mosqueSelect.value = 'jame-masjid';
-        // Display the mosque times immediately
+        // Load that mosque's times
         const mosque = leicesterMosques['jame-masjid'];
         if (mosque) {
             displayMosquePrayerTimes(mosque);
         }
+    } else {
+        document.getElementById('mosqueSelector').style.display = 'none';
+        // Load general city times
+        getTimesForCity();
+    }
+}
+
+// Initialize with Leicester by default (Hanafi method)
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('⏳ Initializing Salah Times page...');
+    
+    // Set Leicester as default city
+    const citySelect = document.getElementById('citySelect');
+    if (citySelect) {
+        citySelect.value = 'Leicester';
+    }
+    
+    // Show mosque selector
+    const mosqueSelector = document.getElementById('mosqueSelector');
+    if (mosqueSelector) {
+        mosqueSelector.style.display = 'block';
+    }
+    
+    // Set default mosque
+    const mosqueSelect = document.getElementById('mosqueSelect');
+    if (mosqueSelect) {
+        mosqueSelect.value = 'jame-masjid';
+    }
+    
+    // Load default mosque times
+    const mosque = leicesterMosques['jame-masjid'];
+    if (mosque) {
+        console.log('✅ Loading default mosque: Jame Masjid');
+        displayMosquePrayerTimes(mosque);
     }
 });
