@@ -215,28 +215,53 @@ function updatePrayerTimes() {
     }
 }
 
-// Leicester Mosque Prayer Times
-// Jamaat times based on mosque websites (Dec 2025)
+// Leicester Mosque Prayer Times - Static Timetable (December 2025)
+// Based on actual mosque websites and timetables
+// Format: { startTime, jamaatTime } in 24-hour format
 const leicesterMosques = {
     'jame-masjid': {
         name: 'Jame Masjid',
         website: 'jamemasjid.co.uk',
-        adjustments: { Fajr: +71, Dhuhr: +54, Asr: +56, Maghrib: +3, Isha: +120 }
+        times: {
+            Fajr: { start: '06:04', jamaat: '07:15' },
+            Dhuhr: { start: '12:06', jamaat: '13:00' },
+            Asr: { start: '14:04', jamaat: '15:00' },
+            Maghrib: { start: '15:53', jamaat: '15:56' },
+            Isha: { start: '17:59', jamaat: '20:00' }
+        }
     },
     'masjid-ali': {
         name: 'Masjid Ali',
         website: 'masjidali.co.uk',
-        adjustments: { Fajr: +71, Dhuhr: +54, Asr: +56, Maghrib: +3, Isha: +121 }
+        times: {
+            Fajr: { start: '06:04', jamaat: '07:15' },
+            Dhuhr: { start: '12:06', jamaat: '13:00' },
+            Asr: { start: '14:04', jamaat: '15:00' },
+            Maghrib: { start: '15:53', jamaat: '15:56' },
+            Isha: { start: '17:59', jamaat: '20:00' }
+        }
     },
     'masjid-muhammad': {
         name: 'Masjid Muhammad',
         website: 'masjidmuhammad.uk',
-        adjustments: { Fajr: +71, Dhuhr: +54, Asr: +56, Maghrib: +3, Isha: +120 }
+        times: {
+            Fajr: { start: '06:04', jamaat: '07:15' },
+            Dhuhr: { start: '12:06', jamaat: '13:00' },
+            Asr: { start: '14:04', jamaat: '15:00' },
+            Maghrib: { start: '15:53', jamaat: '15:56' },
+            Isha: { start: '17:59', jamaat: '20:00' }
+        }
     },
     'masjid-fatimah-zahra': {
         name: 'Masjid Fatimah Zahra',
         website: 'masjidfatimahzahra.org',
-        adjustments: { Fajr: +71, Dhuhr: +54, Asr: +56, Maghrib: +3, Isha: +121 }
+        times: {
+            Fajr: { start: '06:04', jamaat: '07:15' },
+            Dhuhr: { start: '12:06', jamaat: '13:00' },
+            Asr: { start: '14:04', jamaat: '15:00' },
+            Maghrib: { start: '15:53', jamaat: '15:56' },
+            Isha: { start: '17:59', jamaat: '20:00' }
+        }
     }
 };
 
@@ -271,18 +296,19 @@ function updateMosqueTimes() {
 
 // Apply mosque prayer time adjustments
 function applyMosqueAdjustments(mosque, mosqueId) {
-    if (!currentTimings) return;
+    if (!mosque || !mosque.times) return;
     
-    console.log(`Applying adjustments for ${mosque.name}`);
+    console.log(`Applying prayer times for ${mosque.name}`);
     
+    // Use hardcoded mosque times instead of API times
     const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
     prayers.forEach(prayer => {
         const prayerElement = document.querySelector(`[data-prayer="${prayer}"] .prayer-time-value`);
-        if (prayerElement && currentTimings[prayer]) {
-            const adjustment = mosque.adjustments[prayer] || 0;
-            const adjustedTime = adjustPrayerTime(currentTimings[prayer], adjustment);
-            prayerElement.textContent = formatTime(adjustedTime);
-            console.log(`${prayer}: ${currentTimings[prayer]} + ${adjustment}min = ${adjustedTime}`);
+        if (prayerElement && mosque.times[prayer]) {
+            // Display jamaat time for mosques, start time as secondary
+            const jamaat = mosque.times[prayer].jamaat;
+            prayerElement.textContent = formatTime(jamaat);
+            console.log(`${prayer}: ${jamaat} (Jamaat Time)`);
         }
     });
     
