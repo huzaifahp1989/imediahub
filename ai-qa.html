@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Islamic Q&A - Islamic Utility Hub</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Islamic Utility Hub</div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="zakat.html" class="nav-link">Zakat Calculator</a></li>
+                <li><a href="salah-times.html" class="nav-link">Salah Times</a></li>
+                <li><a href="umrah-guide.html" class="nav-link">Umrah Guide</a></li>
+                <li><a href="ai-qa-working.html" class="nav-link ai-highlight active">📚 AI Islamic Q&A</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="page-header ai-header">
+        <div class="container">
+            <h1>🤖 AI Islamic Assistant</h1>
+            <h2 class="subtitle">Authentic Sources • Free Forever</h2>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="ai-qa-container">
+                
+                <!-- Question Input -->
+                <div class="question-card">
+                    <h2>Ask Your Islamic Question</h2>
+                    <textarea 
+                        id="questionInput" 
+                        class="question-input" 
+                        placeholder="Example: What are the 5 pillars of Islam?&#10;Example: How do I perform Wudu?&#10;Example: What is the meaning of Surah Al-Fatiha?"
+                        rows="5"
+                    ></textarea>
+                    <button class="ask-btn" id="askBtn" onclick="askQuestion()">
+                        💬 Ask Question
+                    </button>
+                </div>
+
+                <!-- Loading -->
+                <div class="loading-card" id="loadingCard" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>🔍 Searching authentic Islamic sources...</p>
+                    <p><small>This may take 2-5 seconds</small></p>
+                </div>
+
+                <!-- Answer Display -->
+                <div class="answer-card" id="answerCard" style="display: none;">
+                    <h2>📖 Answer</h2>
+                    <div class="answer-section">
+                        <div id="answerContent"></div>
+                    </div>
+                    <div class="answer-section">
+                        <h3>📚 Note</h3>
+                        <p><em>References are included in the answer above. For personal matters or complex rulings, please consult qualified Islamic scholars in your area.</em></p>
+                    </div>
+                </div>
+
+                <!-- Example Questions -->
+                <div class="examples-card">
+                    <h2>Example Questions</h2>
+                    <div class="examples-list">
+                        <div class="example-item" onclick="fillQuestion('What are the 5 pillars of Islam?')">
+                            What are the 5 pillars of Islam?
+                        </div>
+                        <div class="example-item" onclick="fillQuestion('How do I perform Wudu step by step?')">
+                            How do I perform Wudu step by step?
+                        </div>
+                        <div class="example-item" onclick="fillQuestion('What is the meaning of Surah Al-Fatiha?')">
+                            What is the meaning of Surah Al-Fatiha?
+                        </div>
+                        <div class="example-item" onclick="fillQuestion('What are the virtues of praying Tahajjud?')">
+                            What are the virtues of praying Tahajjud?
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Disclaimer -->
+                <div class="disclaimer-card">
+                    <h3>📢 Important Disclaimer</h3>
+                    <p><strong>🆓 Powered by Groq AI - 100% FREE & Fast!</strong></p>
+                    <p>This AI assistant provides general Islamic knowledge from authentic sources. However:</p>
+                    <ul>
+                        <li>Always verify with qualified Islamic scholars for personal matters</li>
+                        <li>Different schools of thought may have different rulings</li>
+                        <li>This tool complements, not replaces, learning from scholars</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About</h3>
+                    <p>Islamic Utility Hub provides authentic Islamic knowledge and practical tools.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Tools</h3>
+                    <p><a href="zakat.html">Zakat Calculator</a></p>
+                    <p><a href="salah-times.html">Salah Times</a></p>
+                    <p><a href="umrah-guide.html">Umrah Guide</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Islamic Utility Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // IMPORTANT: Replace with your own API key
+        // Get free key from: https://console.groq.com/keys
+        const GROQ_API_KEY = 'YOUR_GROQ_API_KEY_HERE';
+        
+        const ISLAMIC_SYSTEM_PROMPT = `You are an Islamic knowledge assistant. Follow these rules:
+1. Always provide specific Qur'an and Hadith references
+2. Never give personal opinions - only cite authentic sources
+3. If unsure, say "Allah knows best. Please consult a qualified scholar."
+4. Structure answers clearly with references included
+5. Acknowledge different schools of thought when applicable`;
+
+        function fillQuestion(question) {
+            document.getElementById('questionInput').value = question;
+            document.getElementById('questionInput').focus();
+        }
+
+        async function askQuestion() {
+            console.log('🚀 Ask Question button clicked!');
+            
+            const questionInput = document.getElementById('questionInput');
+            const loadingCard = document.getElementById('loadingCard');
+            const answerCard = document.getElementById('answerCard');
+            const askBtn = document.getElementById('askBtn');
+            
+            const question = questionInput.value.trim();
+            
+            console.log('Question:', question);
+            
+            if (!question) {
+                alert('⚠️ Please enter a question first!');
+                return;
+            }
+
+            // Disable button and show loading
+            askBtn.disabled = true;
+            askBtn.textContent = '⏳ Processing...';
+            loadingCard.style.display = 'block';
+            answerCard.style.display = 'none';
+            
+            // Scroll to loading
+            loadingCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            try {
+                console.log('📡 Calling Groq API...');
+                
+                const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${GROQ_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'llama-3.3-70b-versatile',
+                        messages: [
+                            {
+                                role: 'system',
+                                content: ISLAMIC_SYSTEM_PROMPT
+                            },
+                            {
+                                role: 'user',
+                                content: question
+                            }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 1500
+                    })
+                });
+
+                console.log('Response status:', response.status);
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`API Error: ${response.status} - ${errorData.error?.message || response.statusText}`);
+                }
+
+                const data = await response.json();
+                const aiResponse = data.choices[0].message.content;
+
+                console.log('✅ Got response:', aiResponse.substring(0, 100) + '...');
+
+                // Hide loading
+                loadingCard.style.display = 'none';
+
+                // Format and display answer
+                const formattedAnswer = aiResponse
+                    .replace(/\n\n/g, '</p><p>')
+                    .replace(/\n/g, '<br>');
+                
+                document.getElementById('answerContent').innerHTML = `<p>${formattedAnswer}</p>`;
+
+                // Show answer card
+                answerCard.style.display = 'block';
+                answerCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                console.log('✅ Answer displayed successfully!');
+
+            } catch (error) {
+                console.error('❌ Error:', error);
+                
+                // Hide loading
+                loadingCard.style.display = 'none';
+                
+                // Show error in answer card
+                document.getElementById('answerContent').innerHTML = `
+                    <div style="background: #fee; border-left: 4px solid #f00; padding: 20px; border-radius: 8px;">
+                        <h3 style="color: #c00; margin-top: 0;">⚠️ Error</h3>
+                        <p><strong>Could not get response:</strong></p>
+                        <p>${error.message}</p>
+                        <p>Please check your internet connection and try again.</p>
+                    </div>
+                `;
+                answerCard.style.display = 'block';
+                answerCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } finally {
+                // Re-enable button
+                askBtn.disabled = false;
+                askBtn.textContent = '💬 Ask Question';
+            }
+        }
+
+        // Allow Enter key to submit (with Shift+Enter for new line)
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('questionInput');
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    askQuestion();
+                }
+            });
+            console.log('✅ Page loaded successfully');
+        });
+    </script>
+</body>
+</html>

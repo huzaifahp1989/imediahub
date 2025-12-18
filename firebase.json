@@ -1,0 +1,45 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "README.md"
+    ],
+    "rewrites": [
+      {
+        "source": "/",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/zakat",
+        "destination": "/zakat.html"
+      },
+      {
+        "source": "/salah-times",
+        "destination": "/salah-times.html"
+      },
+      {
+        "source": "/umrah-guide",
+        "destination": "/umrah-guide.html"
+      },
+      {
+        "source": "/ai-qa",
+        "destination": "/ai-qa.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(css|js)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=86400"
+          }
+        ]
+      }
+    ],
+    "cleanUrls": true
+  }
+}

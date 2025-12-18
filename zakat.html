@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate your Zakat obligation - Islamic Utility Hub">
+    <title>Zakat Calculator - Islamic Utility Hub</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Islamic Utility Hub</div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="zakat.html" class="nav-link active">Zakat Calculator</a></li>
+                <li><a href="salah-times.html" class="nav-link">Salah Times</a></li>
+                <li><a href="umrah-guide.html" class="nav-link">Umrah Guide</a></li>
+                <li><a href="ai-qa.html" class="nav-link ai-highlight">📚 AI Islamic Q&A</a></li>
+                <li><a href="#" class="nav-link">More</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="page-header">
+        <div class="container">
+            <h1>🧮 Zakat Calculator</h1>
+            <p>Calculate your Zakat obligation (2.5% of eligible wealth)</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="zakat-container">
+                <!-- Calculator Form -->
+                <div class="calculator-card">
+                    <h2>Enter Your Assets</h2>
+                    
+                    <div class="input-group">
+                        <label for="gold">Gold (in grams)</label>
+                        <input type="number" id="gold" placeholder="0" min="0" step="0.01">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="goldPrice">Gold Price per Gram (£)</label>
+                        <input type="number" id="goldPrice" placeholder="50" min="0" step="0.01" value="50">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="silver">Silver (in grams)</label>
+                        <input type="number" id="silver" placeholder="0" min="0" step="0.01">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="silverPrice">Silver Price per Gram (£)</label>
+                        <input type="number" id="silverPrice" placeholder="0.60" min="0" step="0.01" value="0.60">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="cash">Cash & Bank Savings (£)</label>
+                        <input type="number" id="cash" placeholder="0" min="0" step="0.01">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="business">Business Assets/Investments (£)</label>
+                        <input type="number" id="business" placeholder="0" min="0" step="0.01">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="debts">Debts & Liabilities (£)</label>
+                        <input type="number" id="debts" placeholder="0" min="0" step="0.01">
+                    </div>
+
+                    <button class="calculate-btn" onclick="calculateZakat()">Calculate Zakat</button>
+                </div>
+
+                <!-- Results -->
+                <div class="results-card" id="resultsCard">
+                    <h2>Zakat Calculation Results</h2>
+                    
+                    <div class="result-item">
+                        <span>Total Zakatable Wealth:</span>
+                        <strong id="totalWealth">£0.00</strong>
+                    </div>
+
+                    <div class="result-item">
+                        <span>Nisab Threshold (Gold - 87.48g):</span>
+                        <strong id="nisabGold">£0.00</strong>
+                    </div>
+
+                    <div class="result-item">
+                        <span>Nisab Threshold (Silver - 612.36g):</span>
+                        <strong id="nisabSilver">£0.00</strong>
+                    </div>
+
+                    <div class="result-item nisab-status" id="nisabStatus">
+                        <span>Zakat Status:</span>
+                        <strong id="nisabText">-</strong>
+                    </div>
+
+                    <div class="result-item zakat-amount">
+                        <span>Your Zakat Due (2.5%):</span>
+                        <strong id="zakatAmount">£0.00</strong>
+                    </div>
+                </div>
+
+                <!-- Information -->
+                <div class="info-card">
+                    <h2>Important Information</h2>
+                    
+                    <div class="info-section">
+                        <h3>Who Must Pay Zakat?</h3>
+                        <p>Zakat is obligatory upon every Muslim who possesses wealth above the Nisab threshold for one lunar year. The Nisab is equivalent to 87.48 grams of gold or 612.36 grams of silver.</p>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>When is Zakat Due?</h3>
+                        <p>Zakat becomes due after your wealth exceeds the Nisab for a full lunar year (Hawl). Many Muslims pay during Ramadan, though it can be paid at any time once due.</p>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>What Wealth is Zakatable?</h3>
+                        <ul>
+                            <li>Gold and silver (jewelry, coins, bars)</li>
+                            <li>Cash and bank balances</li>
+                            <li>Business inventory and trade goods</li>
+                            <li>Stocks, shares, and investments</li>
+                            <li>Agricultural produce</li>
+                            <li>Livestock</li>
+                        </ul>
+                    </div>
+
+                    <div class="disclaimer">
+                        <strong>Disclaimer:</strong> This calculator is a guide only. Please verify your calculation with a qualified Islamic scholar if you are unsure about your Zakat obligation. Prices should be updated to current market rates.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About</h3>
+                    <p>Islamic Utility Hub provides authentic Islamic knowledge and practical tools for Muslims worldwide.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Disclaimer</h3>
+                    <p>This website provides general Islamic guidance. For specific matters, please consult qualified scholars.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>More tools coming soon in shaa Allah</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Islamic Utility Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function calculateZakat() {
+            // Get input values
+            const gold = parseFloat(document.getElementById('gold').value) || 0;
+            const goldPrice = parseFloat(document.getElementById('goldPrice').value) || 50;
+            const silver = parseFloat(document.getElementById('silver').value) || 0;
+            const silverPrice = parseFloat(document.getElementById('silverPrice').value) || 0.60;
+            const cash = parseFloat(document.getElementById('cash').value) || 0;
+            const business = parseFloat(document.getElementById('business').value) || 0;
+            const debts = parseFloat(document.getElementById('debts').value) || 0;
+
+            // Calculate values
+            const goldValue = gold * goldPrice;
+            const silverValue = silver * silverPrice;
+            const totalWealth = goldValue + silverValue + cash + business - debts;
+
+            // Calculate Nisab thresholds
+            const nisabGold = 87.48 * goldPrice;
+            const nisabSilver = 612.36 * silverPrice;
+            const nisabThreshold = Math.min(nisabGold, nisabSilver); // Use lower threshold
+
+            // Calculate Zakat (2.5%)
+            const zakatDue = totalWealth >= nisabThreshold ? totalWealth * 0.025 : 0;
+
+            // Display results
+            document.getElementById('totalWealth').textContent = `£${totalWealth.toFixed(2)}`;
+            document.getElementById('nisabGold').textContent = `£${nisabGold.toFixed(2)}`;
+            document.getElementById('nisabSilver').textContent = `£${nisabSilver.toFixed(2)}`;
+            document.getElementById('zakatAmount').textContent = `£${zakatDue.toFixed(2)}`;
+
+            const nisabStatus = document.getElementById('nisabStatus');
+            const nisabText = document.getElementById('nisabText');
+            
+            if (totalWealth >= nisabThreshold) {
+                nisabText.textContent = 'Zakat is obligatory';
+                nisabStatus.style.color = '#1E88E5';
+            } else {
+                nisabText.textContent = 'Below Nisab threshold';
+                nisabStatus.style.color = '#666';
+            }
+
+            // Show results card
+            document.getElementById('resultsCard').style.display = 'block';
+            document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>

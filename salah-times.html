@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Accurate UK Prayer Times - Islamic Utility Hub">
+    <title>Salah Times - Islamic Utility Hub</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Islamic Utility Hub</div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="zakat.html" class="nav-link">Zakat Calculator</a></li>
+                <li><a href="salah-times.html" class="nav-link active">Salah Times</a></li>
+                <li><a href="umrah-guide.html" class="nav-link">Umrah Guide</a></li>
+                <li><a href="ai-qa.html" class="nav-link ai-highlight">📚 AI Islamic Q&A</a></li>
+                <li><a href="#" class="nav-link">More</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="page-header">
+        <div class="container">
+            <h1>🕋 Salah Times</h1>
+            <p>Accurate prayer times for your location</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="salah-container">
+                <!-- Location Selection -->
+                <div class="location-card">
+                    <h2>Select Your Location</h2>
+                    
+                    <div class="location-options">
+                        <button class="location-btn" onclick="getLocationAuto()">
+                            📍 Use My Location
+                        </button>
+                        
+                        <div class="manual-location">
+                            <select id="citySelect" onchange="getTimesForCity()">
+                                <option value="">Select a UK City</option>
+                                <option value="Leicester" selected>Leicester</option>
+                                <option value="London">London</option>
+                                <option value="Birmingham">Birmingham</option>
+                                <option value="Manchester">Manchester</option>
+                                <option value="Glasgow">Glasgow</option>
+                                <option value="Leeds">Leeds</option>
+                                <option value="Liverpool">Liverpool</option>
+                                <option value="Edinburgh">Edinburgh</option>
+                                <option value="Bristol">Bristol</option>
+                                <option value="Sheffield">Sheffield</option>
+                                <option value="Bradford">Bradford</option>
+                                <option value="Cardiff">Cardiff</option>
+                                <option value="Belfast">Belfast</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mosque-selector" id="mosqueSelector" style="margin-top: 15px;">
+                            <label for="mosqueSelect">Select Mosque (Leicester):</label>
+                            <select id="mosqueSelect" onchange="updateMosqueTimes()">
+                                <option value="general">General Times (Aladhan API)</option>
+                                <option value="masjid-umar">Masjid Umar (Green Lane)</option>
+                                <option value="jame-masjid">Jame Masjid (Conduit Street)</option>
+                                <option value="madinah-masjid">Madinah Masjid (Evington)</option>
+                                <option value="central-masjid">Central Mosque (Melbourne Road)</option>
+                                <option value="abu-bakr">Abu Bakr Mosque (Queens Road)</option>
+                                <option value="umar-masjid">Umar Masjid (East Park Road)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="calculation-method">
+                        <label for="methodSelect">Calculation Method:</label>
+                        <select id="methodSelect" onchange="updatePrayerTimes()">
+                            <option value="2">Islamic Society of North America (ISNA)</option>
+                            <option value="3" selected>Muslim World League (MWL)</option>
+                            <option value="4">Umm Al-Qura University, Makkah</option>
+                            <option value="1">University of Islamic Sciences, Karachi</option>
+                            <option value="5">Egyptian General Authority of Survey</option>
+                        </select>
+                    </div>
+
+                    <div class="asr-method">
+                        <label for="asrMethod">Asr Calculation:</label>
+                        <select id="asrMethod" onchange="updatePrayerTimes()">
+                            <option value="0">Standard (Shafi, Maliki, Hanbali)</option>
+                            <option value="1" selected>Hanafi</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Prayer Times Display -->
+                <div class="prayer-times-card" id="prayerTimesCard">
+                    <div class="current-location">
+                        <h2 id="locationName">Loading...</h2>
+                        <p id="currentDate"></p>
+                    </div>
+
+                    <div class="prayer-times-grid" id="prayerTimesGrid">
+                        <div class="prayer-time" data-prayer="Fajr">
+                            <div class="prayer-name">Fajr</div>
+                            <div class="prayer-time-value">--:--</div>
+                        </div>
+                        <div class="prayer-time" data-prayer="Sunrise">
+                            <div class="prayer-name">Sunrise</div>
+                            <div class="prayer-time-value">--:--</div>
+                        </div>
+                        <div class="prayer-time" data-prayer="Dhuhr">
+                            <div class="prayer-name">Dhuhr</div>
+                            <div class="prayer-time-value">--:--</div>
+                        </div>
+                        <div class="prayer-time" data-prayer="Asr">
+                            <div class="prayer-name">Asr</div>
+                            <div class="prayer-time-value">--:--</div>
+                        </div>
+                        <div class="prayer-time" data-prayer="Maghrib">
+                            <div class="prayer-name">Maghrib</div>
+                            <div class="prayer-time-value">--:--</div>
+                        </div>
+                        <div class="prayer-time" data-prayer="Isha">
+                            <div class="prayer-name">Isha</div>
+                            <div class="prayer-time-value">--:--</div>
+                        </div>
+                    </div>
+
+                    <div class="next-prayer" id="nextPrayer">
+                        <p>Next prayer: <strong id="nextPrayerName">--</strong></p>
+                        <p>Time remaining: <strong id="timeRemaining">--</strong></p>
+                    </div>
+                </div>
+
+                <!-- Information -->
+                <div class="info-card">
+                    <h2>About Prayer Times</h2>
+                    <p>Prayer times are calculated using the Aladhan API, which provides accurate Islamic prayer times based on your location and preferred calculation method.</p>
+                    
+                    <div class="info-section">
+                        <h3>Calculation Methods</h3>
+                        <p>Different Islamic organizations use slightly different calculations for Fajr and Isha times based on the angle of the sun. Choose the method commonly used in your region or recommended by your local mosque.</p>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Asr Calculation</h3>
+                        <p><strong>Standard:</strong> Used by Shafi'i, Maliki, and Hanbali schools - Asr begins when an object's shadow equals its length plus its shadow at noon.</p>
+                        <p><strong>Hanafi:</strong> Asr begins when an object's shadow is twice its length plus its shadow at noon.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About</h3>
+                    <p>Islamic Utility Hub provides authentic Islamic knowledge and practical tools for Muslims worldwide.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Disclaimer</h3>
+                    <p>This website provides general Islamic guidance. For specific matters, please consult qualified scholars.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>More tools coming soon in shaa Allah</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Islamic Utility Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="salah-times.js"></script>
+</body>
+</html>
