@@ -245,29 +245,52 @@ function updateMosqueTimes() {
     const mosqueId = document.getElementById('mosqueSelect').value;
     const city = document.getElementById('citySelect').value;
     
-    if (city === 'Leicester' && mosqueId !== 'general') {
-        // Apply mosque adjustments
-        const mosque = leicesterMosques[mosqueId];
-        if (mosque && currentTimings) {
-            const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-            prayers.forEach(prayer => {
-                const adjustment = mosque.adjustments[prayer] || 0;
-                if (adjustment !== 0) {
-                    const prayerElement = document.querySelector(`[data-prayer="${prayer}"] .prayer-time-value`);
-                    if (prayerElement && currentTimings[prayer]) {
-                        const adjustedTime = adjustPrayerTime(currentTimings[prayer], adjustment);
-                        prayerElement.textContent = formatTime(adjustedTime);
-                    }
-                }
-            });
-            
-            // Update location name to show mosque
-            document.getElementById('locationName').textContent = `${mosque.name}, Leicester`;
-        }
-    } else {
-        // Reload general times
+    // If general or not Leicester, reload times
+    if (city !== 'Leicester' || mosqueId === 'general') {
         getTimesForCity();
+        return;
     }
+    
+    // Apply mosque adjustments
+    const mosque = leicesterMosques[mosqueId];
+    if (!mosque) {
+        getTimesForCity();
+        return;
+    }
+    
+    // If we don't have current timings yet, fetch them first
+    if (!currentTimings) {
+        getTimesForCity();
+        setTimeout(() => {
+            applyMosqueAdjustments(mosque, mosqueId);
+        }, 500);
+    } else {
+        applyMosqueAdjustments(mosque, mosqueId);
+    }
+}
+
+// Apply mosque prayer time adjustments
+function applyMosqueAdjustments(mosque, mosqueId) {
+    if (!currentTimings) return;
+    
+    console.log(`Applying adjustments for ${mosque.name}`);
+    
+    const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+    prayers.forEach(prayer => {
+        const prayerElement = document.querySelector(`[data-prayer="${prayer}"] .prayer-time-value`);
+        if (prayerElement && currentTimings[prayer]) {
+            const adjustment = mosque.adjustments[prayer] || 0;
+            const adjustedTime = adjustPrayerTime(currentTimings[prayer], adjustment);
+            prayerElement.textContent = formatTime(adjustedTime);
+            console.log(`${prayer}: ${currentTimings[prayer]} + ${adjustment}min = ${adjustedTime}`);
+        }
+    });
+    
+    // Update location name to show mosque
+    document.getElementById('locationName').textContent = `${mosque.name}, Leicester`;
+    
+    // Show prayer times if not visible
+    document.getElementById('prayerTimesCard').style.display = 'block';
 }
 
 // Adjust prayer time by minutes
