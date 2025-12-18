@@ -271,14 +271,20 @@ function updateMosqueTimes() {
     const city = document.getElementById('citySelect').value;
     
     console.log(`🕌 Mosque Update - Selected: ${mosqueId}, City: ${city}`);
+    console.log(`Available mosques:`, Object.keys(leicesterMosques));
     
     // Only show mosque times if Leicester is selected and a specific mosque chosen
     if (city === 'Leicester' && mosqueId && mosqueId !== 'general') {
         const mosque = leicesterMosques[mosqueId];
-        if (mosque) {
-            console.log(`✅ Displaying ${mosque.name}`);
+        console.log(`🔍 Looking for mosque key "${mosqueId}":`, mosque);
+        
+        if (mosque && mosque.times) {
+            console.log(`✅ Found and displaying ${mosque.name}`);
             displayMosquePrayerTimes(mosque);
             return;
+        } else {
+            console.error(`❌ Mosque data not found for key: ${mosqueId}`);
+            console.error(`Mosque object:`, mosque);
         }
     }
     
