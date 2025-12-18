@@ -215,31 +215,28 @@ function updatePrayerTimes() {
     }
 }
 
-// Leicester Mosque Prayer Times (example data - update with actual mosque times)
+// Leicester Mosque Prayer Times
+// Jamaat times based on mosque websites (Dec 2025)
 const leicesterMosques = {
-    'masjid-umar': {
-        name: 'Masjid Umar (Green Lane)',
-        adjustments: { Fajr: 0, Dhuhr: +5, Asr: +5, Maghrib: +3, Isha: +5 }
-    },
     'jame-masjid': {
-        name: 'Jame Masjid (Conduit Street)',
-        adjustments: { Fajr: 0, Dhuhr: +5, Asr: +5, Maghrib: +3, Isha: +5 }
+        name: 'Jame Masjid',
+        website: 'jamemasjid.co.uk',
+        adjustments: { Fajr: +71, Dhuhr: +54, Asr: +56, Maghrib: +3, Isha: +120 }
     },
-    'madinah-masjid': {
-        name: 'Madinah Masjid (Evington)',
-        adjustments: { Fajr: 0, Dhuhr: +5, Asr: +5, Maghrib: +3, Isha: +5 }
+    'masjid-ali': {
+        name: 'Masjid Ali',
+        website: 'masjidali.co.uk',
+        adjustments: { Fajr: +71, Dhuhr: +54, Asr: +56, Maghrib: +3, Isha: +121 }
     },
-    'central-masjid': {
-        name: 'Central Mosque (Melbourne Road)',
-        adjustments: { Fajr: 0, Dhuhr: +5, Asr: +5, Maghrib: +3, Isha: +5 }
+    'masjid-muhammad': {
+        name: 'Masjid Muhammad',
+        website: 'masjidmuhammad.uk',
+        adjustments: { Fajr: +71, Dhuhr: +54, Asr: +56, Maghrib: +3, Isha: +120 }
     },
-    'abu-bakr': {
-        name: 'Abu Bakr Mosque (Queens Road)',
-        adjustments: { Fajr: 0, Dhuhr: +5, Asr: +5, Maghrib: +3, Isha: +5 }
-    },
-    'umar-masjid': {
-        name: 'Umar Masjid (East Park Road)',
-        adjustments: { Fajr: 0, Dhuhr: +5, Asr: +5, Maghrib: +3, Isha: +5 }
+    'masjid-fatimah-zahra': {
+        name: 'Masjid Fatimah Zahra',
+        website: 'masjidfatimahzahra.org',
+        adjustments: { Fajr: +71, Dhuhr: +54, Asr: +56, Maghrib: +3, Isha: +121 }
     }
 };
 
