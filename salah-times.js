@@ -215,52 +215,265 @@ function updatePrayerTimes() {
     }
 }
 
-// Leicester Mosque Prayer Times - Static Timetable (December 2025)
-// Based on actual mosque websites and timetables
-// Format: { startTime, jamaatTime } in 24-hour format
+// Leicester Mosque Prayer Times - Real Data from SalaahTimes.co.uk
+// Source: https://www.salaahtimes.co.uk/Mosque/Details/2
+// Jame Masjid, 51 Asfordby Street, Leicester LE5 3QG
 const leicesterMosques = {
     'jame-masjid': {
         name: 'Jame Masjid',
-        website: 'jamemasjid.co.uk',
-        times: {
-            Fajr: { start: '06:04', jamaat: '07:15' },
-            Dhuhr: { start: '12:06', jamaat: '13:00' },
-            Asr: { start: '14:04', jamaat: '15:00' },
-            Maghrib: { start: '15:53', jamaat: '15:56' },
-            Isha: { start: '17:59', jamaat: '20:00' }
+        website: 'salaahtimes.co.uk',
+        address: '51 Asfordby Street, Leicester LE5 3QG',
+        receiver: 'Not available',
+        // Complete timetable for December 2025 (jamaat times)
+        // Updates dynamically based on current date
+        timetable: {
+            '2025-12-01': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:56', Isha: '20:00' },
+            '2025-12-02': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:56', Isha: '20:00' },
+            '2025-12-03': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:55', Isha: '20:00' },
+            '2025-12-04': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:55', Isha: '20:00' },
+            '2025-12-05': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:54', Isha: '20:00' },
+            '2025-12-06': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:54', Isha: '18:10' },
+            '2025-12-07': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:53', Isha: '18:10' },
+            '2025-12-08': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-09': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-10': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-11': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:52', Isha: '20:00' },
+            '2025-12-12': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:52', Isha: '20:00' },
+            '2025-12-13': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:52', Isha: '18:10' },
+            '2025-12-14': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:52', Isha: '18:10' },
+            '2025-12-15': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:52', Isha: '20:00' },
+            '2025-12-16': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-17': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-18': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-19': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:54', Isha: '20:00' },
+            '2025-12-20': { Fajr: '07:30', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:54', Isha: '18:10' },
+            '2025-12-21': { Fajr: '07:30', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:54', Isha: '18:15' },
+            '2025-12-22': { Fajr: '07:30', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:55', Isha: '18:15' },
+            '2025-12-23': { Fajr: '07:30', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:56', Isha: '18:15' },
+            '2025-12-24': { Fajr: '07:30', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:56', Isha: '18:15' },
+            '2025-12-25': { Fajr: '07:30', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:57', Isha: '18:15' },
+            '2025-12-26': { Fajr: '07:30', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:58', Isha: '18:15' },
+            '2025-12-27': { Fajr: '07:30', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:58', Isha: '18:15' },
+            '2025-12-28': { Fajr: '07:30', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:59', Isha: '18:20' },
+            '2025-12-29': { Fajr: '07:30', Dhuhr: '13:00', Asr: '15:00', Maghrib: '16:00', Isha: '18:20' },
+            '2025-12-30': { Fajr: '07:30', Dhuhr: '13:00', Asr: '15:00', Maghrib: '16:01', Isha: '18:20' },
+            '2025-12-31': { Fajr: '07:30', Dhuhr: '13:00', Asr: '15:00', Maghrib: '16:02', Isha: '18:20' }
+        },
+        jumah: {
+            bayaan: '12:40',
+            khutba: '13:10'
         }
     },
-    'masjid-ali': {
-        name: 'Masjid Ali',
-        website: 'masjidali.co.uk',
-        times: {
-            Fajr: { start: '06:04', jamaat: '07:15' },
-            Dhuhr: { start: '12:06', jamaat: '13:00' },
-            Asr: { start: '14:04', jamaat: '15:00' },
-            Maghrib: { start: '15:53', jamaat: '15:56' },
-            Isha: { start: '17:59', jamaat: '20:00' }
+    'ehsaan-academy': {
+        name: 'Al Ehsaan Academy',
+        website: 'salaahtimes.co.uk',
+        address: '96 Evington Road, Leicester LE2 1HH',
+        phone: '07883444892',
+        receiver: '453.075 MHz',
+        timetable: {
+            '2025-12-01': { Fajr: '07:00', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:56', Isha: '19:30' },
+            '2025-12-02': { Fajr: '07:00', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:56', Isha: '19:30' },
+            '2025-12-03': { Fajr: '07:00', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:55', Isha: '19:30' },
+            '2025-12-04': { Fajr: '07:00', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:55', Isha: '19:30' },
+            '2025-12-05': { Fajr: '07:00', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:54', Isha: '19:30' },
+            '2025-12-06': { Fajr: '07:30', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:54', Isha: '19:30' },
+            '2025-12-07': { Fajr: '07:30', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:53', Isha: '19:30' },
+            '2025-12-08': { Fajr: '07:00', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:53', Isha: '19:30' },
+            '2025-12-09': { Fajr: '07:00', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:53', Isha: '19:30' },
+            '2025-12-10': { Fajr: '07:00', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:53', Isha: '19:30' },
+            '2025-12-11': { Fajr: '07:00', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:52', Isha: '19:30' },
+            '2025-12-12': { Fajr: '07:00', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:52', Isha: '19:30' },
+            '2025-12-13': { Fajr: '07:30', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:52', Isha: '19:30' },
+            '2025-12-14': { Fajr: '07:30', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:52', Isha: '19:30' },
+            '2025-12-15': { Fajr: '07:00', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:52', Isha: '19:30' },
+            '2025-12-16': { Fajr: '07:00', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:53', Isha: '19:30' },
+            '2025-12-17': { Fajr: '07:00', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:53', Isha: '19:30' },
+            '2025-12-18': { Fajr: '07:00', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:53', Isha: '19:30' },
+            '2025-12-19': { Fajr: '07:00', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:54', Isha: '19:30' },
+            '2025-12-20': { Fajr: '07:40', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:54', Isha: '19:30' },
+            '2025-12-21': { Fajr: '07:40', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:54', Isha: '19:30' },
+            '2025-12-22': { Fajr: '07:40', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:55', Isha: '19:30' },
+            '2025-12-23': { Fajr: '07:40', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:56', Isha: '19:30' },
+            '2025-12-24': { Fajr: '07:40', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:56', Isha: '19:30' },
+            '2025-12-25': { Fajr: '07:40', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:57', Isha: '19:30' },
+            '2025-12-26': { Fajr: '07:40', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:58', Isha: '19:30' },
+            '2025-12-27': { Fajr: '07:40', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:58', Isha: '19:30' },
+            '2025-12-28': { Fajr: '07:40', Dhuhr: '13:15', Asr: '15:20', Maghrib: '15:59', Isha: '19:30' },
+            '2025-12-29': { Fajr: '07:40', Dhuhr: '13:15', Asr: '15:20', Maghrib: '16:00', Isha: '19:30' },
+            '2025-12-30': { Fajr: '07:40', Dhuhr: '13:15', Asr: '15:20', Maghrib: '16:01', Isha: '19:30' },
+            '2025-12-31': { Fajr: '07:40', Dhuhr: '13:15', Asr: '15:20', Maghrib: '16:02', Isha: '19:30' }
+        },
+        jumah: {
+            bayaan1: '12:05',
+            azaan1: '12:20',
+            khutba1: '12:30',
+            khutba2: '13:30'
         }
     },
-    'masjid-muhammad': {
-        name: 'Masjid Muhammad',
-        website: 'masjidmuhammad.uk',
-        times: {
-            Fajr: { start: '06:04', jamaat: '07:15' },
-            Dhuhr: { start: '12:06', jamaat: '13:00' },
-            Asr: { start: '14:04', jamaat: '15:00' },
-            Maghrib: { start: '15:53', jamaat: '15:56' },
-            Isha: { start: '17:59', jamaat: '20:00' }
+    'as-salaam-peace': {
+        name: 'As-Salaam (The Peace Centre)',
+        website: 'salaahtimes.co.uk',
+        address: 'Thurncourt Road, Thurnby Lodge, Leicester LE5 2NG',
+        phone: '0116 2417100',
+        receiver: 'Not available',
+        timetable: {
+            '2025-12-01': { Fajr: '07:25', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:56', Isha: '19:10' },
+            '2025-12-02': { Fajr: '07:25', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:56', Isha: '19:10' },
+            '2025-12-03': { Fajr: '07:25', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:55', Isha: '19:10' },
+            '2025-12-04': { Fajr: '07:25', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:55', Isha: '19:10' },
+            '2025-12-05': { Fajr: '07:25', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:54', Isha: '19:10' },
+            '2025-12-06': { Fajr: '07:25', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:54', Isha: '18:10' },
+            '2025-12-07': { Fajr: '07:25', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:53', Isha: '18:10' },
+            '2025-12-08': { Fajr: '07:35', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:53', Isha: '19:10' },
+            '2025-12-09': { Fajr: '07:35', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:53', Isha: '19:10' },
+            '2025-12-10': { Fajr: '07:35', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:53', Isha: '19:10' },
+            '2025-12-11': { Fajr: '07:35', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:52', Isha: '19:10' },
+            '2025-12-12': { Fajr: '07:35', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:52', Isha: '19:10' },
+            '2025-12-13': { Fajr: '07:35', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:52', Isha: '18:10' },
+            '2025-12-14': { Fajr: '07:35', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:52', Isha: '18:10' },
+            '2025-12-15': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:52', Isha: '19:10' },
+            '2025-12-16': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:53', Isha: '19:10' },
+            '2025-12-17': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:53', Isha: '19:10' },
+            '2025-12-18': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:53', Isha: '19:10' },
+            '2025-12-19': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:54', Isha: '19:10' },
+            '2025-12-20': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:54', Isha: '18:15' },
+            '2025-12-21': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:54', Isha: '18:15' },
+            '2025-12-22': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:55', Isha: '18:15' },
+            '2025-12-23': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:56', Isha: '18:15' },
+            '2025-12-24': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:56', Isha: '18:15' },
+            '2025-12-25': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:57', Isha: '18:15' },
+            '2025-12-26': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:58', Isha: '18:15' },
+            '2025-12-27': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:58', Isha: '18:15' },
+            '2025-12-28': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '15:59', Isha: '18:15' },
+            '2025-12-29': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '16:00', Isha: '18:15' },
+            '2025-12-30': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '16:01', Isha: '18:15' },
+            '2025-12-31': { Fajr: '07:45', Dhuhr: '12:30', Asr: '14:40', Maghrib: '16:02', Isha: '18:15' }
+        },
+        jumah: {
+            bayaan1: '12:20',
+            azaan1: '12:40',
+            khutba1: '12:50',
+            bayaan2: '13:15',
+            khutba2: '13:35'
         }
     },
-    'masjid-fatimah-zahra': {
-        name: 'Masjid Fatimah Zahra',
-        website: 'masjidfatimahzahra.org',
-        times: {
-            Fajr: { start: '06:04', jamaat: '07:15' },
-            Dhuhr: { start: '12:06', jamaat: '13:00' },
-            Asr: { start: '14:04', jamaat: '15:00' },
-            Maghrib: { start: '15:53', jamaat: '15:56' },
-            Isha: { start: '17:59', jamaat: '20:00' }
+    'madani-school': {
+        name: 'Madani School Masjid',
+        website: 'salaahtimes.co.uk',
+        address: '77 Evington Valley Road, Leicester LE5 5LL',
+        receiver: '459.800 MHz',
+        timetable: {
+            '2025-12-01': { Fajr: '06:30', Dhuhr: '--', Asr: '--', Maghrib: '15:56', Isha: '20:00' },
+            '2025-12-02': { Fajr: '06:30', Dhuhr: '--', Asr: '--', Maghrib: '15:56', Isha: '20:00' },
+            '2025-12-03': { Fajr: '06:30', Dhuhr: '--', Asr: '--', Maghrib: '15:55', Isha: '20:00' },
+            '2025-12-04': { Fajr: '06:30', Dhuhr: '--', Asr: '--', Maghrib: '15:55', Isha: '20:00' },
+            '2025-12-05': { Fajr: '06:30', Dhuhr: '12:30', Asr: '--', Maghrib: '15:54', Isha: '20:00' },
+            '2025-12-06': { Fajr: '06:30', Dhuhr: '12:30', Asr: '15:00', Maghrib: '15:54', Isha: '18:15' },
+            '2025-12-07': { Fajr: '06:30', Dhuhr: '12:30', Asr: '15:00', Maghrib: '15:53', Isha: '18:15' },
+            '2025-12-08': { Fajr: '06:30', Dhuhr: '--', Asr: '--', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-09': { Fajr: '06:30', Dhuhr: '--', Asr: '--', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-10': { Fajr: '06:30', Dhuhr: '--', Asr: '--', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-11': { Fajr: '06:30', Dhuhr: '--', Asr: '--', Maghrib: '15:52', Isha: '20:00' },
+            '2025-12-12': { Fajr: '06:30', Dhuhr: '12:30', Asr: '--', Maghrib: '15:52', Isha: '20:00' },
+            '2025-12-13': { Fajr: '06:30', Dhuhr: '12:30', Asr: '15:00', Maghrib: '15:52', Isha: '18:00' },
+            '2025-12-14': { Fajr: '06:30', Dhuhr: '12:30', Asr: '15:00', Maghrib: '15:52', Isha: '18:15' },
+            '2025-12-15': { Fajr: '06:30', Dhuhr: '--', Asr: '--', Maghrib: '15:52', Isha: '20:00' },
+            '2025-12-16': { Fajr: '06:30', Dhuhr: '--', Asr: '--', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-17': { Fajr: '06:30', Dhuhr: '--', Asr: '--', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-18': { Fajr: '06:30', Dhuhr: '--', Asr: '--', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-19': { Fajr: '06:30', Dhuhr: '12:30', Asr: '--', Maghrib: '15:54', Isha: '20:00' },
+            '2025-12-20': { Fajr: '06:30', Dhuhr: '12:30', Asr: '15:00', Maghrib: '15:54', Isha: '18:15' },
+            '2025-12-21': { Fajr: '06:30', Dhuhr: '12:30', Asr: '15:00', Maghrib: '15:54', Isha: '18:15' },
+            '2025-12-22': { Fajr: '06:30', Dhuhr: '12:30', Asr: '15:00', Maghrib: '15:55', Isha: '18:15' },
+            '2025-12-23': { Fajr: '06:30', Dhuhr: '12:30', Asr: '15:00', Maghrib: '15:56', Isha: '18:15' },
+            '2025-12-24': { Fajr: '06:30', Dhuhr: '12:30', Asr: '15:00', Maghrib: '15:56', Isha: '18:15' },
+            '2025-12-25': { Fajr: '06:30', Dhuhr: '12:30', Asr: '15:00', Maghrib: '15:57', Isha: '18:15' },
+            '2025-12-26': { Fajr: '06:30', Dhuhr: '12:30', Asr: '15:00', Maghrib: '15:58', Isha: '18:15' },
+            '2025-12-27': { Fajr: '06:30', Dhuhr: '12:30', Asr: '15:00', Maghrib: '15:58', Isha: '18:15' },
+            '2025-12-28': { Fajr: '06:30', Dhuhr: '12:30', Asr: '15:00', Maghrib: '15:59', Isha: '18:15' },
+            '2025-12-29': { Fajr: '06:30', Dhuhr: '12:30', Asr: '15:00', Maghrib: '16:00', Isha: '18:20' },
+            '2025-12-30': { Fajr: '06:30', Dhuhr: '12:30', Asr: '15:00', Maghrib: '16:01', Isha: '18:20' },
+            '2025-12-31': { Fajr: '06:30', Dhuhr: '12:30', Asr: '15:00', Maghrib: '16:02', Isha: '18:20' }
+        }
+    },
+    'baytul-ilm': {
+        name: 'Madrasah Baytul Ilm (Masjid Ibraheem)',
+        website: 'salaahtimes.co.uk',
+        address: 'Spinney Hill Road, Leicester LE5 3GH',
+        phone: '0116 251 1018',
+        receiver: '453.525 MHz',
+        timetable: {
+            '2025-12-01': { Fajr: '07:00', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:56', Isha: '20:00' },
+            '2025-12-02': { Fajr: '07:00', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:56', Isha: '20:00' },
+            '2025-12-03': { Fajr: '07:00', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:55', Isha: '20:00' },
+            '2025-12-04': { Fajr: '07:00', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:55', Isha: '20:00' },
+            '2025-12-05': { Fajr: '07:00', Dhuhr: '13:05', Asr: '14:55', Maghrib: '15:54', Isha: '20:00' },
+            '2025-12-06': { Fajr: '07:00', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:54', Isha: '18:10' },
+            '2025-12-07': { Fajr: '07:00', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:53', Isha: '18:10' },
+            '2025-12-08': { Fajr: '07:00', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-09': { Fajr: '07:00', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-10': { Fajr: '07:00', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-11': { Fajr: '07:00', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:52', Isha: '20:00' },
+            '2025-12-12': { Fajr: '07:00', Dhuhr: '13:05', Asr: '14:55', Maghrib: '15:52', Isha: '20:00' },
+            '2025-12-13': { Fajr: '07:00', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:52', Isha: '18:10' },
+            '2025-12-14': { Fajr: '07:00', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:52', Isha: '18:10' },
+            '2025-12-15': { Fajr: '07:00', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:52', Isha: '20:00' },
+            '2025-12-16': { Fajr: '07:00', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-17': { Fajr: '07:00', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-18': { Fajr: '07:00', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-19': { Fajr: '07:00', Dhuhr: '13:05', Asr: '14:55', Maghrib: '15:54', Isha: '20:00' },
+            '2025-12-20': { Fajr: '07:45', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:54', Isha: '18:20' },
+            '2025-12-21': { Fajr: '07:45', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:54', Isha: '18:20' },
+            '2025-12-22': { Fajr: '07:45', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:55', Isha: '18:20' },
+            '2025-12-23': { Fajr: '07:45', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:56', Isha: '18:20' },
+            '2025-12-24': { Fajr: '07:45', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:56', Isha: '18:20' },
+            '2025-12-25': { Fajr: '07:45', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:57', Isha: '18:20' },
+            '2025-12-26': { Fajr: '07:45', Dhuhr: '13:05', Asr: '14:55', Maghrib: '15:58', Isha: '18:20' },
+            '2025-12-27': { Fajr: '07:45', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:58', Isha: '18:20' },
+            '2025-12-28': { Fajr: '07:45', Dhuhr: '12:40', Asr: '14:55', Maghrib: '15:59', Isha: '18:20' },
+            '2025-12-29': { Fajr: '07:45', Dhuhr: '12:40', Asr: '14:55', Maghrib: '16:00', Isha: '18:20' },
+            '2025-12-30': { Fajr: '07:45', Dhuhr: '12:40', Asr: '14:55', Maghrib: '16:01', Isha: '18:20' },
+            '2025-12-31': { Fajr: '07:45', Dhuhr: '12:40', Asr: '14:55', Maghrib: '16:02', Isha: '18:20' }
+        }
+    },
+    'majlis-e-dawatul-haq': {
+        name: 'Majlis e Dawatul Haq',
+        website: 'salaahtimes.co.uk',
+        address: '126-130 Earl Howe Street, Leicester LE2 0DG',
+        phone: '0116 255 9847',
+        receiver: 'Not available',
+        timetable: {
+            '2025-12-01': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:56', Isha: '20:00' },
+            '2025-12-02': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:56', Isha: '20:00' },
+            '2025-12-03': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:55', Isha: '20:00' },
+            '2025-12-04': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:55', Isha: '20:00' },
+            '2025-12-05': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:54', Isha: '20:00' },
+            '2025-12-06': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:54', Isha: '18:30' },
+            '2025-12-07': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:53', Isha: '18:30' },
+            '2025-12-08': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-09': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-10': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-11': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:52', Isha: '20:00' },
+            '2025-12-12': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:52', Isha: '20:00' },
+            '2025-12-13': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:52', Isha: '18:30' },
+            '2025-12-14': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:52', Isha: '18:30' },
+            '2025-12-15': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:52', Isha: '20:00' },
+            '2025-12-16': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-17': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-18': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:53', Isha: '20:00' },
+            '2025-12-19': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:54', Isha: '20:00' },
+            '2025-12-20': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:54', Isha: '18:30' },
+            '2025-12-21': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:54', Isha: '18:30' },
+            '2025-12-22': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:55', Isha: '18:30' },
+            '2025-12-23': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:56', Isha: '18:30' },
+            '2025-12-24': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:56', Isha: '18:30' },
+            '2025-12-25': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:57', Isha: '18:30' },
+            '2025-12-26': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:58', Isha: '18:30' },
+            '2025-12-27': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:58', Isha: '18:30' },
+            '2025-12-28': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '15:59', Isha: '18:30' },
+            '2025-12-29': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '16:00', Isha: '18:30' },
+            '2025-12-30': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '16:01', Isha: '18:30' },
+            '2025-12-31': { Fajr: '07:00', Dhuhr: '13:00', Asr: '15:00', Maghrib: '16:02', Isha: '18:30' }
         }
     }
 };
@@ -271,20 +484,15 @@ function updateMosqueTimes() {
     const city = document.getElementById('citySelect').value;
     
     console.log(`🕌 Mosque Update - Selected: ${mosqueId}, City: ${city}`);
-    console.log(`Available mosques:`, Object.keys(leicesterMosques));
     
     // Only show mosque times if Leicester is selected and a specific mosque chosen
     if (city === 'Leicester' && mosqueId && mosqueId !== 'general') {
         const mosque = leicesterMosques[mosqueId];
-        console.log(`🔍 Looking for mosque key "${mosqueId}":`, mosque);
         
-        if (mosque && mosque.times) {
-            console.log(`✅ Found and displaying ${mosque.name}`);
-            displayMosquePrayerTimes(mosque);
+        if (mosque && mosque.timetable) {
+            console.log(`✅ Loading mosque times for ${mosque.name}`);
+            displayMosqueTimetable(mosque);
             return;
-        } else {
-            console.error(`❌ Mosque data not found for key: ${mosqueId}`);
-            console.error(`Mosque object:`, mosque);
         }
     }
     
@@ -293,38 +501,51 @@ function updateMosqueTimes() {
     getTimesForCity();
 }
 
-// Display mosque prayer times directly
-function displayMosquePrayerTimes(mosque) {
-    if (!mosque || !mosque.times) {
-        console.error('❌ Invalid mosque data');
+// Display mosque timetable from static data
+function displayMosqueTimetable(mosque) {
+    if (!mosque || !mosque.timetable) {
+        console.error('❌ Invalid mosque timetable data');
         return;
     }
     
-    console.log(`📖 Displaying prayer times for ${mosque.name}`);
+    console.log(`📖 Displaying timetable for ${mosque.name}`);
     
-    // Update location
-    document.getElementById('locationName').textContent = `${mosque.name}, Leicester`;
+    // Get today's date in format YYYY-MM-DD
+    const today = new Date();
+    const dateStr = today.getFullYear() + '-' + 
+                   String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+                   String(today.getDate()).padStart(2, '0');
+    
+    const todaysTimes = mosque.timetable[dateStr];
+    
+    if (!todaysTimes) {
+        console.error(`❌ No times found for ${dateStr}`);
+        alert('Prayer times not available for today');
+        return;
+    }
+    
+    // Update location with address
+    const locationText = mosque.address ? 
+        `${mosque.name}, Leicester` : 
+        `${mosque.name}, Leicester`;
+    document.getElementById('locationName').textContent = locationText;
     
     // Update date
-    const today = new Date();
-    const dateStr = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    document.getElementById('currentDate').textContent = dateStr;
+    const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateStr2 = today.toLocaleDateString('en-US', dateOptions);
+    document.getElementById('currentDate').textContent = dateStr2;
     
-    // Update prayer times - display jamaat times
-    const prayerOrder = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-    prayerOrder.forEach(prayer => {
-        const element = document.querySelector(`[data-prayer="${prayer}"] .prayer-time-value`);
-        if (element && mosque.times[prayer]) {
-            const jamaatTime = mosque.times[prayer].jamaat;
-            element.textContent = formatTime(jamaatTime);
-            console.log(`  ${prayer}: ${formatTime(jamaatTime)}`);
-        }
-    });
-    
-    // Store times for next prayer calculation
+    // Update prayer times
+    const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
     currentTimings = {};
-    prayerOrder.forEach(prayer => {
-        currentTimings[prayer] = mosque.times[prayer].jamaat;
+    
+    prayers.forEach(prayer => {
+        const element = document.querySelector(`[data-prayer="${prayer}"] .prayer-time-value`);
+        if (element && todaysTimes[prayer]) {
+            element.textContent = formatTime(todaysTimes[prayer]);
+            currentTimings[prayer] = todaysTimes[prayer];
+            console.log(`  ${prayer}: ${formatTime(todaysTimes[prayer])}`);
+        }
     });
     
     // Show prayer times card
@@ -361,7 +582,7 @@ function onCityChange() {
         // Load that mosque's times
         const mosque = leicesterMosques['jame-masjid'];
         if (mosque) {
-            displayMosquePrayerTimes(mosque);
+            displayMosqueTimetable(mosque);
         }
     } else {
         document.getElementById('mosqueSelector').style.display = 'none';
@@ -370,7 +591,7 @@ function onCityChange() {
     }
 }
 
-// Initialize with Leicester by default (Hanafi method)
+// Initialize with Leicester by default
 document.addEventListener('DOMContentLoaded', () => {
     console.log('⏳ Initializing Salah Times page...');
     
@@ -395,7 +616,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load default mosque times
     const mosque = leicesterMosques['jame-masjid'];
     if (mosque) {
-        console.log('✅ Loading default mosque: Jame Masjid');
-        displayMosquePrayerTimes(mosque);
+        console.log('✅ Loading default mosque: Jame Masjid (SalaahTimes.co.uk)');
+        displayMosqueTimetable(mosque);
     }
 });
