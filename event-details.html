@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Event Details - Islamic Utility Hub">
+    <title>Event Details - Islamic Utility Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="events-styles.css">
+</head>
+<body>
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Islamic Utility Hub</div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="zakat.html" class="nav-link">Zakat Calculator</a></li>
+                <li><a href="salah-times.html" class="nav-link">Salah Times</a></li>
+                <li><a href="umrah-guide.html" class="nav-link">Umrah Guide</a></li>
+                <li><a href="ai-qa.html" class="nav-link ai-highlight">📚 AI Islamic Q&A</a></li>
+                <li><a href="events.html" class="nav-link active">📅 Events</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Event Details Section -->
+    <section class="event-details-section">
+        <div class="container">
+            <!-- Back Button -->
+            <a href="events.html" class="back-button">← Back to Events</a>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="loading-state">
+                <div class="spinner"></div>
+                <p>Loading event details...</p>
+            </div>
+
+            <!-- Event Details Content -->
+            <div id="eventDetailsContent" class="event-details-content" style="display: none;">
+                <!-- Event Banner -->
+                <div class="event-banner">
+                    <img id="eventImage" src="" alt="Event Banner">
+                    <div class="event-status-badge" id="eventStatusBadge"></div>
+                </div>
+
+                <!-- Event Info -->
+                <div class="event-info-card">
+                    <!-- Event Type -->
+                    <div class="event-type-tag" id="eventTypeTag"></div>
+
+                    <!-- Event Title -->
+                    <h1 class="event-title" id="eventTitle"></h1>
+
+                    <!-- Countdown Timer (for upcoming events) -->
+                    <div id="countdownTimer" class="countdown-timer" style="display: none;">
+                        <div class="countdown-label">Event starts in:</div>
+                        <div class="countdown-display">
+                            <div class="countdown-item">
+                                <span class="countdown-value" id="daysValue">0</span>
+                                <span class="countdown-unit">Days</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="countdown-value" id="hoursValue">0</span>
+                                <span class="countdown-unit">Hours</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="countdown-value" id="minutesValue">0</span>
+                                <span class="countdown-unit">Minutes</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="countdown-value" id="secondsValue">0</span>
+                                <span class="countdown-unit">Seconds</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event Meta Information -->
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">📅</span>
+                            <div class="meta-content">
+                                <div class="meta-label">Date</div>
+                                <div class="meta-value" id="eventDate"></div>
+                            </div>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">🕐</span>
+                            <div class="meta-content">
+                                <div class="meta-label">Time</div>
+                                <div class="meta-value" id="eventTime"></div>
+                            </div>
+                        </div>
+                        <div class="meta-item" id="locationMeta" style="display: none;">
+                            <span class="meta-icon">📍</span>
+                            <div class="meta-content">
+                                <div class="meta-label">Location</div>
+                                <div class="meta-value" id="eventLocation"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event Description -->
+                    <div class="event-description">
+                        <h2>About This Event</h2>
+                        <p id="eventDescription"></p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="event-actions">
+                        <button class="action-btn primary-btn" id="shareBtn">
+                            <span class="btn-icon">📤</span> Share Event
+                        </button>
+                        <button class="action-btn secondary-btn" id="contactBtn" style="display: none;">
+                            <span class="btn-icon">📧</span> Contact / More Info
+                        </button>
+                    </div>
+
+                    <!-- Event Footer -->
+                    <div class="event-footer">
+                        <p class="added-date">Added on: <span id="addedDate"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="error-state" style="display: none;">
+                <div class="error-icon">⚠️</div>
+                <h3>Event Not Found</h3>
+                <p>The event you're looking for doesn't exist or has been removed.</p>
+                <a href="events.html" class="back-link-btn">Back to Events</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Islamic Utility Hub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Configuration & Scripts -->
+    <script src="config.js"></script>
+    <script src="event-details.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

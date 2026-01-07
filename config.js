@@ -71,6 +71,17 @@ const CONFIG = {
     }
 };
 
+// Firebase Configuration
+// Get your Firebase config from: https://console.firebase.google.com/
+const FIREBASE_CONFIG = {
+    apiKey: "your-firebase-api-key",
+    authDomain: "your-project.firebaseapp.com",
+    projectId: "your-project-id",
+    storageBucket: "your-project.appspot.com",
+    messagingSenderId: "your-messaging-sender-id",
+    appId: "your-app-id"
+};
+
 // Export for use in other files
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = CONFIG;
