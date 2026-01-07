@@ -1,121 +1,81 @@
-// Today's Prayer Times Data - Source: salaahtimes.co.uk
-// Last updated: January 7, 2026
+// Today's Prayer Times - Auto-updated from salaahtimes.co.uk
+// Data fetched dynamically via Vercel serverless function
 
-const prayerTimesData = [
-    { name: "Al Ehsaan Academy", fajr: "07:00", dhuhr: "13:15", asr: "15:30", maghrib: "16:11", isha: "19:30" },
-    { name: "Al Furqan Centre", fajr: "07:00", dhuhr: "12:30", asr: "14:15", maghrib: "16:11", isha: "19:00" },
-    { name: "Al Ma'rifah Academy", fajr: "07:15", dhuhr: "13:00", asr: "15:15", maghrib: "16:11", isha: "19:15" },
-    { name: "As-Salaam (The Peace Centre)", fajr: "07:30", dhuhr: "12:30", asr: "14:40", maghrib: "16:11", isha: "19:10" },
-    { name: "Baytul Ihsaan (Darul Fath)", fajr: "06:50", dhuhr: "12:45", asr: "14:45", maghrib: "16:12", isha: "20:00" },
-    { name: "Beaumont Leys Muslims", fajr: "06:53", dhuhr: "12:30", asr: "14:30", maghrib: "16:16", isha: "19:30" },
-    { name: "Central Mosque", fajr: "07:15", dhuhr: "13:15", asr: "15:00", maghrib: "16:11", isha: "19:30" },
-    { name: "City Retreat Leicester", fajr: "06:45", dhuhr: "12:30", asr: "14:30", maghrib: "16:11", isha: "18:15" },
-    { name: "Coleman Lodge Prayer Room", fajr: "06:50", dhuhr: "12:40", asr: "14:50", maghrib: "16:10", isha: "18:30" },
-    { name: "Darul Arqam Education Centre", fajr: "06:45", dhuhr: "13:00", asr: "15:00", maghrib: "16:08", isha: "19:15" },
-    { name: "Darul Ihsaan (The Mayflower)", fajr: "07:00", dhuhr: "13:00", asr: "14:45", maghrib: "16:11", isha: "19:30" },
-    { name: "Darus-Salam Masjid", fajr: "07:30", dhuhr: "13:00", asr: "15:15", maghrib: "16:12", isha: "19:00" },
-    { name: "Faizan-E-Madina", fajr: "07:30", dhuhr: "13:30", asr: "15:15", maghrib: "16:10", isha: "20:00" },
-    { name: "Faiz-E-Raza Academy", fajr: "07:15", dhuhr: "13:00", asr: "14:45", maghrib: "16:11", isha: "20:00" },
-    { name: "Gulzar-E-Madina", fajr: "07:15", dhuhr: "13:15", asr: "15:15", maghrib: "16:11", isha: "19:15" },
-    { name: "Hajra Mosque", fajr: "06:45", dhuhr: "12:30", asr: "14:15", maghrib: "16:11", isha: "18:15" },
-    { name: "Islamic Da'wah Academy (IDA)", fajr: "06:20", dhuhr: "12:40", asr: "15:00", maghrib: "16:11", isha: "20:30" },
-    { name: "Jame Masjid", fajr: "07:00", dhuhr: "13:00", asr: "15:00", maghrib: "16:11", isha: "20:00" },
-    { name: "Jamia Sufiya", fajr: "07:00", dhuhr: "13:30", asr: "15:20", maghrib: "16:11", isha: "18:30" },
-    { name: "Khadijatul Kubra Mosque", fajr: "07:00", dhuhr: "12:30", asr: "14:30", maghrib: "16:11", isha: "18:30" },
-    { name: "Leicester Mosque (Sutherland St)", fajr: "07:15", dhuhr: "13:15", asr: "15:00", maghrib: "16:11", isha: "19:30" },
-    { name: "Leicester Turkish Education & Cultural Society", fajr: "07:00", dhuhr: "13:00", asr: "15:00", maghrib: "16:14", isha: "20:00" },
-    { name: "Madani Education Centre", fajr: "07:00", dhuhr: "12:45", asr: "15:00", maghrib: "16:11", isha: "19:45" },
-    { name: "Madani School Masjid", fajr: "06:30", dhuhr: "--", asr: "--", maghrib: "16:11", isha: "20:00" },
-    { name: "Madrasah Baytul 'ilm (Masjid Ibraheem)", fajr: "07:00", dhuhr: "12:40", asr: "14:55", maghrib: "16:11", isha: "20:00" },
-    { name: "Madrasah Hamidiya (HCO)", fajr: "07:25", dhuhr: "12:35", asr: "15:10", maghrib: "16:11", isha: "19:15" },
-    { name: "Madrasah Ta'leemul Qur'an (Knighton CEC)", fajr: "07:00", dhuhr: "13:00", asr: "15:00", maghrib: "16:11", isha: "20:00" },
-    { name: "Majlis e Dawatul Haq", fajr: "07:00", dhuhr: "13:00", asr: "15:00", maghrib: "16:11", isha: "20:00" },
-    { name: "Markaz Attawheed", fajr: "06:40", dhuhr: "12:30", asr: "14:00", maghrib: "16:11", isha: "18:01" },
-    { name: "Markaz Quba", fajr: "06:45", dhuhr: "12:30", asr: "14:15", maghrib: "16:16", isha: "19:00" },
-    { name: "Masjid Abdullah ibn Mas'ood", fajr: "07:15", dhuhr: "12:30", asr: "15:00", maghrib: "16:11", isha: "20:15" },
-    { name: "Masjid Abu Bakr", fajr: "06:45", dhuhr: "13:00", asr: "15:00", maghrib: "16:11", isha: "19:45" },
-    { name: "Masjid Adam (Oadby Community Hub)", fajr: "06:45", dhuhr: "13:00", asr: "15:00", maghrib: "16:11", isha: "20:00" },
-    { name: "Masjid Aisha", fajr: "07:00", dhuhr: "13:00", asr: "14:40", maghrib: "16:11", isha: "18:21" },
-    { name: "Masjid Al Furqan", fajr: "06:45", dhuhr: "13:00", asr: "15:00", maghrib: "16:11", isha: "19:00" },
-    { name: "Masjid Al-Ansar", fajr: "07:00", dhuhr: "12:45", asr: "14:15", maghrib: "16:16", isha: "20:00" },
-    { name: "Masjid Al-Falah", fajr: "07:20", dhuhr: "13:00", asr: "15:00", maghrib: "16:10", isha: "19:45" },
-    { name: "Masjid Al-Huda", fajr: "07:00", dhuhr: "12:45", asr: "14:30", maghrib: "16:11", isha: "18:30" },
-    { name: "Masjid Ali", fajr: "07:15", dhuhr: "13:00", asr: "15:00", maghrib: "16:11", isha: "20:00" },
-    { name: "Masjid Al-Khaleel (MIQ)", fajr: "07:15", dhuhr: "12:30", asr: "15:00", maghrib: "16:11", isha: "20:00" },
-    { name: "Masjid An Noor (Belgrave)", fajr: "06:45", dhuhr: "12:30", asr: "14:15", maghrib: "16:11", isha: "18:30" },
-    { name: "Masjid An Noor (Highfields)", fajr: "07:15", dhuhr: "12:45", asr: "15:15", maghrib: "16:11", isha: "19:40" },
-    { name: "Masjid Ar-Rahmaan", fajr: "07:00", dhuhr: "13:00", asr: "15:00", maghrib: "16:10", isha: "18:15" },
-    { name: "Masjid At-Taqwa", fajr: "06:45", dhuhr: "12:45", asr: "14:15", maghrib: "16:11", isha: "19:30" },
-    { name: "Masjid Bilal", fajr: "07:00", dhuhr: "13:00", asr: "15:00", maghrib: "16:11", isha: "19:30" },
-    { name: "Masjid Darul Sunnah (Welford Rd)", fajr: "06:45", dhuhr: "12:30", asr: "14:15", maghrib: "16:16", isha: "19:30" },
-    { name: "Masjid Fatima Zahra R.A", fajr: "07:10", dhuhr: "12:25", asr: "15:20", maghrib: "16:11", isha: "18:25" },
-    { name: "Masjid Fida", fajr: "06:45", dhuhr: "12:30", asr: "14:15", maghrib: "16:11", isha: "19:10" },
-    { name: "Masjid Mu'adh ibn Jabal", fajr: "07:00", dhuhr: "13:00", asr: "14:45", maghrib: "16:11", isha: "20:00" },
-    { name: "Masjid Muhammad", fajr: "07:00", dhuhr: "13:15", asr: "15:00", maghrib: "16:11", isha: "20:00" },
-    { name: "Masjid Noor-ul-Islam", fajr: "07:00", dhuhr: "13:00", asr: "15:00", maghrib: "16:11", isha: "19:20" },
-    { name: "Masjid Quba", fajr: "06:45", dhuhr: "12:30", asr: "14:15", maghrib: "16:11", isha: "19:00" },
-    { name: "Masjid Salahuddin", fajr: "06:45", dhuhr: "12:45", asr: "14:30", maghrib: "16:11", isha: "19:40" },
-    { name: "Masjid Taybah", fajr: "07:00", dhuhr: "12:30", asr: "14:00", maghrib: "16:11", isha: "18:45" },
-    { name: "Masjid Umar", fajr: "07:00", dhuhr: "13:00", asr: "15:00", maghrib: "16:11", isha: "20:00" },
-    { name: "Masjid Usman (Markaz)", fajr: "07:00", dhuhr: "13:00", asr: "15:00", maghrib: "16:11", isha: "20:15" },
-    { name: "Masjid-al-Ameen Oadby", fajr: "07:15", dhuhr: "13:15", asr: "15:00", maghrib: "16:11", isha: "19:30" },
-    { name: "Masjidul Islah", fajr: "06:45", dhuhr: "13:00", asr: "14:30", maghrib: "16:10", isha: "19:30" },
-    { name: "Mostyn Street Musalla", fajr: "06:40", dhuhr: "12:45", asr: "15:10", maghrib: "16:11", isha: "19:05" },
-    { name: "Muhaddith E Azam Mission Leicester", fajr: "--", dhuhr: "13:15", asr: "15:00", maghrib: "16:11", isha: "19:30" },
-    { name: "New Parks Academy Musalla", fajr: "07:00", dhuhr: "--", asr: "--", maghrib: "16:11", isha: "19:15" },
-    { name: "Northfields Education Centre", fajr: "06:30", dhuhr: "13:00", asr: "15:00", maghrib: "16:11", isha: "19:40" },
-    { name: "Raza Centre", fajr: "07:00", dhuhr: "13:30", asr: "15:00", maghrib: "16:10", isha: "19:00" },
-    { name: "Sayyidah Zahra Centre", fajr: "07:15", dhuhr: "13:30", asr: "15:30", maghrib: "16:11", isha: "19:30" },
-    { name: "Tajdaar-E-Madina", fajr: "07:00", dhuhr: "13:15", asr: "15:15", maghrib: "16:11", isha: "18:45" },
-    { name: "The Hamilton Hub (Darul Fath)", fajr: "07:00", dhuhr: "13:00", asr: "15:00", maghrib: "16:12", isha: "20:15" },
-    { name: "Usmani Mosque", fajr: "07:00", dhuhr: "13:15", asr: "15:00", maghrib: "16:11", isha: "20:00" }
-];
-
-let filteredData = [...prayerTimesData];
+let prayerTimesData = [];
+let filteredData = [];
 let currentView = 'table';
+let currentDate = '';
+let stats = {
+    totalMosques: 0,
+    earliestFajr: '--',
+    latestIsha: '--'
+};
 
-// Initialize the page
-document.addEventListener('DOMContentLoaded', () => {
-    updateDate();
-    updateStatistics();
-    renderTableView();
-    setupSearch();
-});
-
-// Update current date
-function updateDate() {
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    
-    const today = new Date();
-    const dayName = days[today.getDay()];
-    const monthName = months[today.getMonth()];
-    const date = today.getDate();
-    const year = today.getFullYear();
-    
-    document.getElementById('currentDate').textContent = `${dayName}, ${monthName} ${date}, ${year}`;
+// Fetch prayer times from API
+async function fetchPrayerTimes() {
+    try {
+        // Show loading state
+        document.getElementById('prayersTableBody').innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px;">Loading prayer times...</td></tr>';
+        document.getElementById('cardView').innerHTML = '<p style="text-align: center; padding: 40px;">Loading prayer times...</p>';
+        
+        // Determine API URL based on environment
+        const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? '/api/prayer-times-fallback.json'  // Use fallback for local dev
+            : '/api/prayer-times';  // Use serverless function on Vercel
+        
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        
+        if (data.success && data.mosques && data.mosques.length > 0) {
+            prayerTimesData = data.mosques;
+            currentDate = data.date || new Date().toLocaleDateString('en-GB', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            stats.totalMosques = data.totalMosques || prayerTimesData.length;
+            stats.earliestFajr = data.earliestFajr || '--';
+            stats.latestIsha = data.latestIsha || '--';
+            
+            console.log(`Loaded ${prayerTimesData.length} mosques from API`);
+        } else {
+            throw new Error('Invalid API response');
+        }
+    } catch (error) {
+        console.warn('Failed to fetch from API, using fallback data:', error);
+        await loadFallbackData();
+    }
 }
 
-// Update statistics
+// Load fallback data if API fails
+async function loadFallbackData() {
+    // Use static fallback data for local development
+    prayerTimesData = [
+        { name: "Al Ehsaan Academy", fajr: "07:00", dhuhr: "13:15", asr: "15:30", maghrib: "16:11", isha: "19:30" },
+        { name: "Jame Masjid", fajr: "07:00", dhuhr: "13:00", asr: "15:00", maghrib: "16:11", isha: "20:00" },
+        { name: "Central Mosque", fajr: "07:15", dhuhr: "13:15", asr: "15:00", maghrib: "16:11", isha: "19:30" },
+        { name: "As-Salaam (The Peace Centre)", fajr: "07:30", dhuhr: "12:30", asr: "14:40", maghrib: "16:11", isha: "19:10" }
+    ];
+    
+    currentDate = new Date().toLocaleDateString('en-GB', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+    
+    stats.totalMosques = prayerTimesData.length;
+    stats.earliestFajr = '07:00';
+    stats.latestIsha = '20:00';
+}
+
+// Update statistics display
 function updateStatistics() {
-    const validTimes = filteredData.filter(m => m.fajr !== '--');
-    
-    document.getElementById('totalMosques').textContent = filteredData.length;
-    
-    if (validTimes.length > 0) {
-        // Find earliest Fajr
-        const earliestFajr = validTimes.reduce((earliest, current) => {
-            return current.fajr < earliest.fajr ? current : earliest;
-        }).fajr;
-        
-        // Find latest Isha
-        const latestIsha = validTimes.reduce((latest, current) => {
-            return current.isha !== '--' && current.isha > latest.isha ? current : latest;
-        }).isha;
-        
-        document.getElementById('earliestFajr').textContent = earliestFajr;
-        document.getElementById('latestIsha').textContent = latestIsha;
-    }
+    document.getElementById('totalMosques').textContent = stats.totalMosques;
+    document.getElementById('earliestFajr').textContent = stats.earliestFajr;
+    document.getElementById('latestIsha').textContent = stats.latestIsha;
 }
 
 // Render table view
@@ -134,11 +94,11 @@ function renderTableView() {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td class="mosque-name">${mosque.name}</td>
-            <td class="prayer-time ${mosque.fajr === '--' ? 'no-time' : ''}">${mosque.fajr}</td>
-            <td class="prayer-time ${mosque.dhuhr === '--' ? 'no-time' : ''}">${mosque.dhuhr}</td>
-            <td class="prayer-time ${mosque.asr === '--' ? 'no-time' : ''}">${mosque.asr}</td>
-            <td class="prayer-time ${mosque.maghrib === '--' ? 'no-time' : ''}">${mosque.maghrib}</td>
-            <td class="prayer-time ${mosque.isha === '--' ? 'no-time' : ''}">${mosque.isha}</td>
+            <td class="prayer-time ${mosque.fajr === '--' || mosque.fajr === '-' ? 'no-time' : ''}">${mosque.fajr || '-'}</td>
+            <td class="prayer-time ${mosque.dhuhr === '--' || mosque.dhuhr === '-' ? 'no-time' : ''}">${mosque.dhuhr || '-'}</td>
+            <td class="prayer-time ${mosque.asr === '--' || mosque.asr === '-' ? 'no-time' : ''}">${mosque.asr || '-'}</td>
+            <td class="prayer-time ${mosque.maghrib === '--' || mosque.maghrib === '-' ? 'no-time' : ''}">${mosque.maghrib || '-'}</td>
+            <td class="prayer-time ${mosque.isha === '--' || mosque.isha === '-' ? 'no-time' : ''}">${mosque.isha || '-'}</td>
         `;
         tbody.appendChild(row);
     });
@@ -164,23 +124,23 @@ function renderCardView() {
             <div class="times-grid">
                 <div class="time-item">
                     <span class="time-label">Fajr</span>
-                    <span class="time-value">${mosque.fajr}</span>
+                    <span class="time-value">${mosque.fajr || '-'}</span>
                 </div>
                 <div class="time-item">
                     <span class="time-label">Dhuhr</span>
-                    <span class="time-value">${mosque.dhuhr}</span>
+                    <span class="time-value">${mosque.dhuhr || '-'}</span>
                 </div>
                 <div class="time-item">
                     <span class="time-label">Asr</span>
-                    <span class="time-value">${mosque.asr}</span>
+                    <span class="time-value">${mosque.asr || '-'}</span>
                 </div>
                 <div class="time-item">
                     <span class="time-label">Maghrib</span>
-                    <span class="time-value">${mosque.maghrib}</span>
+                    <span class="time-value">${mosque.maghrib || '-'}</span>
                 </div>
                 <div class="time-item">
                     <span class="time-label">Isha</span>
-                    <span class="time-value">${mosque.isha}</span>
+                    <span class="time-value">${mosque.isha || '-'}</span>
                 </div>
             </div>
         `;
@@ -223,7 +183,8 @@ function setupSearch() {
             return mosque.name.toLowerCase().includes(searchTerm);
         });
         
-        updateStatistics();
+        // Update statistics for filtered results
+        document.getElementById('totalMosques').textContent = filteredData.length;
         
         if (currentView === 'table') {
             renderTableView();
@@ -243,3 +204,27 @@ function showNoResults() {
 function hideNoResults() {
     document.getElementById('noResults').style.display = 'none';
 }
+
+// Initialize the page
+async function init() {
+    // Fetch prayer times from API
+    await fetchPrayerTimes();
+    
+    // Update date display
+    document.getElementById('currentDate').textContent = currentDate;
+    
+    // Initialize filtered data
+    filteredData = [...prayerTimesData];
+    
+    // Update statistics
+    updateStatistics();
+    
+    // Setup search
+    setupSearch();
+    
+    // Render initial view (table)
+    renderTableView();
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', init);
