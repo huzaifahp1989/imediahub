@@ -865,5 +865,54 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('mosquesGrid')) {
         displayMosques(mosques);
         setupSearch();
+        updatePrayerTimes(); // Fetch live data
     }
 });
+
+// Fetch live prayer times from the serverless function
+async function updatePrayerTimes() {
+    try {
+        console.log('Fetching live prayer times...');
+        const response = await fetch('/api/mosques');
+        if (!response.ok) throw new Error('Failed to fetch live times');
+        
+        const liveData = await response.json();
+        console.log(`Received live data for ${liveData.length} mosques`);
+        
+        // Create a lookup map for faster matching
+        const liveMap = new Map(liveData.map(m => [m.name.toLowerCase().replace(/['\u2019]/g, '').trim(), m]));
+        
+        let updatedCount = 0;
+        
+        mosques.forEach(mosque => {
+            // Normalize names: lowercase, remove apostrophes, trim
+            const key = mosque.name.toLowerCase().replace(/['\u2019]/g, '').trim();
+            const live = liveMap.get(key);
+            
+            if (live) {
+                mosque.fajr = live.fajr;
+                mosque.dhuhr = live.dhuhr; // Map Zohar to Dhuhr
+                mosque.asr = live.asr;
+                mosque.maghrib = live.maghrib;
+                mosque.isha = live.isha;
+                updatedCount++;
+            }
+        });
+        
+        console.log(`✅ Updated times for ${updatedCount} mosques`);
+        
+        // Refresh the display if data changed
+        if (updatedCount > 0) {
+            // Check if we need to respect current search filter
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput && searchInput.value) {
+                searchInput.dispatchEvent(new Event('input'));
+            } else {
+                displayMosques(mosques);
+            }
+        }
+        
+    } catch (error) {
+        console.error('Error updating prayer times:', error);
+    }
+}

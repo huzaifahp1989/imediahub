@@ -7,7 +7,8 @@
   "scripts": {
     "start": "npx serve .",
     "build": "node build.js",
-    "deploy": "firebase deploy",
+    "deploy": "vercel --prod",
+    "deploy:firebase": "firebase deploy",
     "serve": "firebase serve",
     "test": "echo \"No tests specified\" && exit 0"
   },
