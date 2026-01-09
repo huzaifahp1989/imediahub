@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Today's Prayer Times - All Leicester Mosques at a Glance">
+    <title>Today's Prayer Times - Islamic Utility Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .prayers-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            overflow-x: visible;
+        }
+
+        .date-header {
+            background: linear-gradient(135deg, #2c5f4f 0%, #1a8754 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(26, 135, 84, 0.2);
+        }
+
+        .date-header h2 {
+            margin: 0 0 8px 0;
+            font-size: 2rem;
+        }
+
+        .date-header p {
+            margin: 0;
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .view-btn {
+            padding: 12px 30px;
+            background: white;
+            border: 2px solid #2c5f4f;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2c5f4f;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn:hover {
+            background: #e8f5e9;
+        }
+
+        .view-btn.active {
+            background: #2c5f4f;
+            color: white;
+        }
+
+        .search-container {
+            margin-bottom: 25px;
+        }
+
+        .search-container input {
+            width: 100%;
+            max-width: 600px;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid #2c5f4f;
+            border-radius: 10px;
+            outline: none;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Table View */
+        .table-view {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+            overflow-y: visible;
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .prayers-table {
+            width: 100%;
+            min-width: 900px;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        @media (max-width: 768px) {
+            .prayers-table {
+                min-width: 100%;
+            }
+        }
+
+        .prayers-table col:first-child {
+            width: 40%;
+        }
+
+        .prayers-table col {
+            width: 12%;
+        }
+
+        .prayers-table thead {
+            background: #2c5f4f;
+            color: white;
+        }
+
+        .prayers-table th {
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        .prayers-table th:first-child {
+            min-width: 200px;
+            white-space: normal;
+        }
+
+        .prayers-table th:not(:first-child) {
+            min-width: 80px;
+        }
+
+        .prayers-table tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+            transition: background 0.2s ease;
+        }
+
+        .prayers-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .prayers-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .prayers-table td {
+            padding: 12px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .prayers-table td:first-child {
+            white-space: normal;
+            word-wrap: break-word;
+            line-height: 1.3;
+        }
+
+        .mosque-name {
+            font-weight: 600;
+            color: #2c5f4f;
+        }
+
+        .prayer-time {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .no-time {
+            color: #999;
+            font-style: italic;
+        }
+
+        /* Card View */
+        .card-view {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .prayer-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .prayer-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .prayer-card h3 {
+            color: #2c5f4f;
+            font-size: 1.1rem;
+            margin: 0 0 15px 0;
+        }
+
+        .prayer-card .times-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .prayer-card .time-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .prayer-card .time-label {
+            font-size: 0.8rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .prayer-card .time-value {
+            font-size: 1rem;
+            color: #2c5f4f;
+            font-weight: 700;
+        }
+
+        .no-results-msg {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            display: none;
+        }
+
+        .stats-summary {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-item .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c5f4f;
+            margin: 0;
+        }
+
+        .stat-item .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 5px 0 0 0;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .prayers-container {
+                padding: 15px 5px;
+            }
+
+            .table-view {
+                overflow-x: hidden;
+                border-radius: 8px;
+            }
+
+            .prayers-table {
+                min-width: 100%;
+                width: 100%;
+                table-layout: fixed;
+            }
+
+            .prayers-table colgroup col:first-child {
+                width: 25%;
+            }
+
+            .prayers-table colgroup col {
+                width: 15%;
+            }
+
+            .prayers-table th,
+            .prayers-table td {
+                padding: 8px 1px;
+                font-size: 0.65rem;
+                white-space: normal;
+                text-align: center;
+                overflow: hidden;
+                letter-spacing: -0.5px;
+            }
+
+            .prayers-table th:first-child,
+            .prayers-table td:first-child {
+                padding: 8px 4px;
+                text-align: left;
+            }
+
+            .prayers-table th {
+                font-size: 0.65rem;
+                padding: 8px 2px;
+                vertical-align: bottom;
+            }
+
+            .mosque-name {
+                font-size: 0.7rem;
+                line-height: 1.1;
+                font-weight: 600;
+            }
+
+            .prayer-time {
+                font-size: 0.7rem;
+            }
+
+            .date-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .date-header p {
+                font-size: 1rem;
+            }
+
+            .view-toggle {
+                flex-direction: column;
+                align-items: stretch;
+                max-width: 300px;
+                margin: 0 auto 30px;
+            }
+
+            .view-btn {
+                width: 100%;
+            }
+
+            .card-view {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-summary {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .stat-item {
+                width: 100%;
+            }
+
+            /* Toggle text visibility */
+            .desktop-text { display: none; }
+            .mobile-text { display: inline; }
+            
+            /* Squeeze text to prevent overlap */
+            .prayers-table th, 
+            .prayers-table td {
+                letter-spacing: -0.5px;
+            }
+        }
+        
+        /* Default state (Desktop) */
+        .mobile-text { display: none; }
+
+        @media (max-width: 480px) {
+            .prayers-container {
+                padding: 15px 8px;
+            }
+
+            .prayers-table {
+                font-size: 0.7rem;
+            }
+
+            .prayers-table th,
+            .prayers-table td {
+                padding: 6px 2px;
+                font-size: 0.7rem;
+            }
+
+            .prayers-table th {
+                font-size: 0.65rem;
+            }
+
+            .mosque-name {
+                font-size: 0.7rem;
+            }
+
+            .prayer-time {
+                font-size: 0.68rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Islamic Utility Hub</div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="zakat.html" class="nav-link">Zakat Calculator</a></li>
+                <li><a href="salah-times.html" class="nav-link">Salah Times</a></li>
+                <li><a href="mosques.html" class="nav-link">Mosques</a></li>
+                <li><a href="today-prayers.html" class="nav-link active">Today's Prayers</a></li>
+                <li><a href="umrah-guide.html" class="nav-link">Umrah Guide</a></li>
+                <li><a href="ai-qa.html" class="nav-link ai-highlight">📚 AI Islamic Q&A</a></li>
+                <li><a href="events.html" class="nav-link">📅 Events</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="page-header">
+        <div class="container">
+            <h1>🕌 Today's Prayer Times</h1>
+            <p>All Leicester mosques at a glance</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="prayers-container">
+            <!-- Date Header -->
+            <div class="date-header">
+                <h2 id="currentDate">Tuesday, January 7, 2026</h2>
+                <p>Jamaat Times for All Mosques</p>
+            </div>
+
+            <!-- Statistics Summary -->
+            <div class="stats-summary">
+                <div class="stat-item">
+                    <p class="stat-number" id="totalMosques">0</p>
+                    <p class="stat-label">Mosques</p>
+                </div>
+                <div class="stat-item">
+                    <p class="stat-number" id="earliestFajr">--</p>
+                    <p class="stat-label">Earliest Fajr</p>
+                </div>
+                <div class="stat-item">
+                    <p class="stat-number" id="latestIsha">--</p>
+                    <p class="stat-label">Latest Isha</p>
+                </div>
+            </div>
+
+            <!-- Search Box -->
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="🔍 Search mosques...">
+            </div>
+
+            <!-- View Toggle -->
+            <div class="view-toggle">
+                <button class="view-btn active" id="tableViewBtn" onclick="switchView('table')">
+                    📊 Table View
+                </button>
+                <button class="view-btn" id="cardViewBtn" onclick="switchView('card')">
+                    🎴 Card View
+                </button>
+            </div>
+
+            <div class="table-view" id="tableView">
+                <table class="prayers-table">
+                    <colgroup>
+                        <col style="width: 40%">
+                        <col style="width: 12%">
+                        <col style="width: 12%">
+                        <col style="width: 12%">
+                        <col style="width: 12%">
+                        <col style="width: 12%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th><span class="desktop-text">Masjid</span><span class="mobile-text">🕌</span></th>
+                            <th>Fajr</th>
+                            <th><span class="desktop-text">Dhuhr</span><span class="mobile-text">Dhr</span></th>
+                            <th>Asr</th>
+                            <th><span class="desktop-text">Maghrib</span><span class="mobile-text">Mag</span></th>
+                            <th>Isha</th>
+                        </tr>
+                    </thead>
+                    <tbody id="prayersTableBody">
+                        <!-- Rows will be dynamically loaded -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Card View -->
+            <div class="card-view" id="cardView">
+                <!-- Cards will be dynamically loaded -->
+            </div>
+
+            <!-- No Results Message -->
+            <div class="no-results-msg" id="noResults">
+                <p>😔 No mosques found matching your search.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Islamic Utility Hub. All rights reserved.</p>
+            <p>Data source: <a href="https://www.salaahtimes.co.uk/Timetable/TodaysTimes" target="_blank" style="color: #1a8754;">SalaahTimes Leicester</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="mosques.js"></script>
+    <script src="today-prayers.js"></script>
+</body>
+</html>

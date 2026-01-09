@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Accurate UK Prayer Times - Islamic Utility Hub">
+    <title>Salah Times - Islamic Utility Hub</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Islamic Utility Hub</div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="zakat.html" class="nav-link">Zakat Calculator</a></li>
+                <li><a href="salah-times.html" class="nav-link active">Salah Times</a></li>
+                <li><a href="mosques.html" class="nav-link">Mosques</a></li>
+                <li><a href="today-prayers.html" class="nav-link">Today's Prayers</a></li>
+                <li><a href="umrah-guide.html" class="nav-link">Umrah Guide</a></li>
+                <li><a href="ai-qa.html" class="nav-link ai-highlight">📚 AI Islamic Q&A</a></li>
+                <li><a href="events.html" class="nav-link">📅 Events</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="page-header">
+        <div class="container">
+            <h1>🕋 Salah Times</h1>
+            <p>Accurate prayer times for your location</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="salah-container">
+                <!-- Location Selection -->
+                <div class="location-card">
+                    <h2>Select Your Location</h2>
+                    
+                    <div class="location-options">
+                        <button class="location-btn" onclick="getLocationAuto()">
+                            📍 Use My Location
+                        </button>
+                        
+                        <div class="manual-location">
+                            <select id="citySelect" onchange="onCityChange()">
+                                <option value="">Select a UK City</option>
+                                <option value="Leicester" selected>Leicester</option>
+                                <option value="London">London</option>
+                                <option value="Birmingham">Birmingham</option>
+                                <option value="Manchester">Manchester</option>
+                                <option value="Glasgow">Glasgow</option>
+                                <option value="Leeds">Leeds</option>
+                                <option value="Liverpool">Liverpool</option>
+                                <option value="Edinburgh">Edinburgh</option>
+                                <option value="Bristol">Bristol</option>
+                                <option value="Sheffield">Sheffield</option>
+                                <option value="Bradford">Bradford</option>
+                                <option value="Cardiff">Cardiff</option>
+                                <option value="Belfast">Belfast</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mosque-selector" id="mosqueSelector" style="margin-top: 15px;">
+                            <label for="mosqueSelect">Select Mosque (Leicester):</label>
+                            <select id="mosqueSelect" onchange="updateMosqueTimes()">
+                                <option value="general">General Times (Aladhan API)</option>
+                                <option value="jame-masjid">Jame Masjid</option>
+                                <option value="ehsaan-academy">Al Ehsaan Academy</option>
+                                <option value="as-salaam-peace">As-Salaam (The Peace Centre)</option>
+                                <option value="madani-school">Madani School Masjid</option>
+                                <option value="baytul-ilm">Baytul Ilm (Masjid Ibraheem)</option>
+                                <option value="majlis-e-dawatul-haq">Majlis e Dawatul Haq</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="calculation-method">
+                        <label for="methodSelect">Calculation Method:</label>
+                        <select id="methodSelect" onchange="updatePrayerTimes()">
+                            <option value="2">Islamic Society of North America (ISNA)</option>
+                            <option value="3" selected>Muslim World League (MWL)</option>
+                            <option value="4">Umm Al-Qura University, Makkah</option>
+                            <option value="1">University of Islamic Sciences, Karachi</option>
+                            <option value="5">Egyptian General Authority of Survey</option>
+                        </select>
+                    </div>
+
+                    <div class="asr-method">
+                        <label for="asrMethod">Asr Calculation:</label>
+                        <select id="asrMethod" onchange="updatePrayerTimes()">
+                            <option value="0">Standard (Shafi, Maliki, Hanbali)</option>
+                            <option value="1" selected>Hanafi</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Prayer Times Display -->
+                <div class="prayer-times-card" id="prayerTimesCard">
+                    <div class="current-location">
+                        <h2 id="locationName">Loading...</h2>
+                        <p id="currentDate"></p>
+                    </div>
+
+                    <div class="prayer-times-grid" id="prayerTimesGrid">
+                        <div class="prayer-time" data-prayer="Fajr">
+                            <div class="prayer-name">Fajr</div>
+                            <div class="prayer-time-value">--:--</div>
+                        </div>
+                        <div class="prayer-time" data-prayer="Sunrise">
+                            <div class="prayer-name">Sunrise</div>
+                            <div class="prayer-time-value">--:--</div>
+                        </div>
+                        <div class="prayer-time" data-prayer="Dhuhr">
+                            <div class="prayer-name">Dhuhr</div>
+                            <div class="prayer-time-value">--:--</div>
+                        </div>
+                        <div class="prayer-time" data-prayer="Asr">
+                            <div class="prayer-name">Asr</div>
+                            <div class="prayer-time-value">--:--</div>
+                        </div>
+                        <div class="prayer-time" data-prayer="Maghrib">
+                            <div class="prayer-name">Maghrib</div>
+                            <div class="prayer-time-value">--:--</div>
+                        </div>
+                        <div class="prayer-time" data-prayer="Isha">
+                            <div class="prayer-name">Isha</div>
+                            <div class="prayer-time-value">--:--</div>
+                        </div>
+                    </div>
+
+                    <div class="next-prayer" id="nextPrayer">
+                        <p>Next prayer: <strong id="nextPrayerName">--</strong></p>
+                        <p>Time remaining: <strong id="timeRemaining">--</strong></p>
+                    </div>
+                </div>
+
+                <!-- Information -->
+                <div class="info-card">
+                    <h2>About Prayer Times</h2>
+                    <p>Prayer times are calculated using the <a href="https://aladhan.com/prayer-times-api" target="_blank" rel="noopener noreferrer" style="color: #2ecc71; text-decoration: underline;">Aladhan Prayer Times API</a> and official mosque timetables from <a href="https://www.salaahtimes.co.uk/" target="_blank" rel="noopener noreferrer" style="color: #2ecc71; text-decoration: underline;">SalaahTimes.co.uk</a>.</p>
+                    
+                    <div class="info-section">
+                        <h3>Jame Masjid Times</h3>
+                        <p>The Jame Masjid prayer times are sourced directly from <a href="https://www.salaahtimes.co.uk/Mosque/Details/2" target="_blank" rel="noopener noreferrer" style="color: #2ecc71;">SalaahTimes.co.uk</a>, located at 51 Asfordby Street, Leicester LE5 3QG. These are the official jamaat times for the mosque.</p>
+                        <p><strong>Jumu'ah (Friday):</strong> Bayaan 12:40 | Khutba 13:10</p>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3>Al Ehsaan Academy Times</h3>
+                        <p>Prayer times sourced from <a href="https://www.salaahtimes.co.uk/Mosque/Details/83" target="_blank" rel="noopener noreferrer" style="color: #2ecc71;">SalaahTimes.co.uk</a>, located at 96 Evington Road, Leicester LE2 1HH. Phone: <a href="tel:07883444892" style="color: #2ecc71;">07883444892</a></p>
+                        <p><strong>Radio Receiver:</strong> 453.075 MHz</p>
+                        <p><strong>Jumu'ah (Friday):</strong> First - Bayaan 12:05 | Azaan 12:20 | Khutba 12:30 | Second - Khutba 13:30</p>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3>As-Salaam (The Peace Centre) Times</h3>
+                        <p>Prayer times sourced from <a href="https://www.salaahtimes.co.uk/Mosque/Details/33" target="_blank" rel="noopener noreferrer" style="color: #2ecc71;">SalaahTimes.co.uk</a>, located at Thurncourt Road, Thurnby Lodge, Leicester LE5 2NG. Phone: <a href="tel:01162417100" style="color: #2ecc71;">0116 2417100</a></p>
+                        <p><strong>Jumu'ah (Friday):</strong> First - Bayaan 12:20 | Azaan 12:40 | Khutba 12:50 | Second - Bayaan 13:15 | Khutba 13:35</p>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3>Madani School Masjid Times</h3>
+                        <p>Prayer times sourced from <a href="https://www.salaahtimes.co.uk/Mosque/Details/8" target="_blank" rel="noopener noreferrer" style="color: #2ecc71;">SalaahTimes.co.uk</a>, located at 77 Evington Valley Road, Leicester LE5 5LL.</p>
+                        <p><strong>Radio Receiver:</strong> 459.800 MHz</p>
+                        <p><strong>Note:</strong> Dhuhr and Asr are not available on weekdays (Mon-Fri except Friday). Available on weekends (Sat-Sun) and Friday (Jumu'ah).</p>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3>Baytul Ilm (Masjid Ibraheem) Times</h3>
+                        <p>Prayer times sourced from <a href="https://www.salaahtimes.co.uk/Mosque/Details/21" target="_blank" rel="noopener noreferrer" style="color: #2ecc71;">SalaahTimes.co.uk</a>, located at Spinney Hill Road, Leicester LE5 3GH. Phone: <a href="tel:01162511018" style="color: #2ecc71;">0116 251 1018</a></p>
+                        <p><strong>Radio Receiver:</strong> 453.525 MHz</p>
+                        <p><strong>Note:</strong> Friday (Jumu'ah) has different Dhuhr time at 13:05 (1:05 PM).</p>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3>Majlis e Dawatul Haq Times</h3>
+                        <p>Prayer times sourced from <a href="https://www.salaahtimes.co.uk/Mosque/Details/26" target="_blank" rel="noopener noreferrer" style="color: #2ecc71;">SalaahTimes.co.uk</a>, located at 126-130 Earl Howe Street, Leicester LE2 0DG. Phone: <a href="tel:01162559847" style="color: #2ecc71;">0116 255 9847</a></p>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3>Calculation Methods</h3>
+                        <p>Different Islamic organizations use slightly different calculations for Fajr and Isha times based on the angle of the sun. Choose the method commonly used in your region or recommended by your local mosque.</p>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Asr Calculation</h3>
+                        <p><strong>Standard:</strong> Used by Shafi'i, Maliki, and Hanbali schools - Asr begins when an object's shadow equals its length plus its shadow at noon.</p>
+                        <p><strong>Hanafi:</strong> Asr begins when an object's shadow is twice its length plus its shadow at noon.</p>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3>API Documentation</h3>
+                        <p>Learn more about the prayer times calculation at <a href="https://aladhan.com/prayer-times-api" target="_blank" rel="noopener noreferrer" style="color: #2ecc71;">aladhan.com/prayer-times-api</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About</h3>
+                    <p>Islamic Utility Hub provides authentic Islamic knowledge and practical tools for Muslims worldwide.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Disclaimer</h3>
+                    <p>This website provides general Islamic guidance. For specific matters, please consult qualified scholars.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>More tools coming soon in shaa Allah</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Islamic Utility Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="mosques.js"></script>
+    <script src="salah-times.js"></script>
+</body>
+</html>

@@ -6,6 +6,7 @@
   "main": "index.html",
   "scripts": {
     "start": "npx serve .",
+    "build": "node build.js",
     "deploy": "firebase deploy",
     "serve": "firebase serve",
     "test": "echo \"No tests specified\" && exit 0"

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Islamic Events & Competitions - Stay Updated">
+    <title>Events & Competitions - Islamic Utility Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="events-styles.css">
+</head>
+<body>
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Islamic Utility Hub</div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="zakat.html" class="nav-link">Zakat Calculator</a></li>
+                <li><a href="salah-times.html" class="nav-link">Salah Times</a></li>
+                <li><a href="umrah-guide.html" class="nav-link">Umrah Guide</a></li>
+                <li><a href="ai-qa.html" class="nav-link ai-highlight">📚 AI Islamic Q&A</a></li>
+                <li><a href="events.html" class="nav-link active">📅 Events</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Events Header -->
+    <section class="events-hero">
+        <div class="container">
+            <h1 class="page-title">📅 Events & Competitions</h1>
+            <p class="page-subtitle">Stay updated with upcoming Islamic events, competitions, and announcements</p>
+        </div>
+    </section>
+
+    <!-- Search and Filter -->
+    <section class="events-controls">
+        <div class="container">
+            <div class="controls-wrapper">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 Search events..." class="search-input">
+                </div>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+                    <button class="filter-btn" data-filter="live">Live</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                </div>
+                <div class="type-filters">
+                    <button class="type-btn active" data-type="all">All Types</button>
+                    <button class="type-btn" data-type="event">Events</button>
+                    <button class="type-btn" data-type="competition">Competitions</button>
+                    <button class="type-btn" data-type="announcement">Announcements</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events List -->
+    <section class="events-section">
+        <div class="container">
+            <!-- Loading State -->
+            <div id="loadingState" class="loading-state">
+                <div class="spinner"></div>
+                <p>Loading events...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-icon">📭</div>
+                <h3>No Events Found</h3>
+                <p>There are no events matching your criteria at the moment.</p>
+            </div>
+
+            <!-- Events Grid -->
+            <div id="eventsGrid" class="events-grid" style="display: none;">
+                <!-- Event cards will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Islamic Utility Hub. All rights reserved.</p>
+            <p>For Admin Access: <a href="admin-events.html" style="color: #1E88E5;">Admin Panel</a></p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    
+    <!-- Configuration & Scripts -->
+    <script src="config.js"></script>
+    <script src="events.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

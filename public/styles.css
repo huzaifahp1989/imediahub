@@ -1,0 +1,880 @@
+/* ==============================
+   ISLAMIC UTILITY HUB - STYLES
+   ============================== */
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --dark-blue: #0A1F44;
+    --light-blue: #1E88E5;
+    --white: #FFFFFF;
+    --light-gray: #F5F5F5;
+    --text-dark: #2C3E50;
+    --text-light: #FFFFFF;
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    background: linear-gradient(135deg, var(--dark-blue) 0%, var(--light-blue) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ==============================
+   NAVIGATION
+   ============================== */
+
+.navbar {
+    background: rgba(10, 31, 68, 0.95);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--white);
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 10px;
+}
+
+.nav-link {
+    color: var(--white);
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    position: relative;
+    font-weight: 500;
+    overflow: hidden;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #1E88E5, transparent);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+.nav-link:hover::after {
+    transform: scaleX(1);
+}
+
+.nav-link.active {
+    background: rgba(30, 136, 229, 0.2);
+}
+
+.nav-link.active::after {
+    transform: scaleX(1);
+}
+
+.nav-link:hover {
+    background: rgba(30, 136, 229, 0.15);
+    transform: translateY(-2px);
+}
+
+.nav-link.ai-highlight {
+    background: linear-gradient(135deg, #1E88E5 0%, #0D47A1 100%);
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(30, 136, 229, 0.5);
+    position: relative;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.nav-link.ai-highlight:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30, 136, 229, 0.6);
+}
+
+.nav-link.ai-highlight::after {
+    display: none;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 4px 15px rgba(30, 136, 229, 0.5);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(30, 136, 229, 0.8);
+    }
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: var(--white);
+    margin: 3px 0;
+    transition: 0.3s;
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background: rgba(10, 31, 68, 0.98);
+        padding: 20px;
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+}
+
+/* ==============================
+   HERO SECTION
+   ============================== */
+
+.hero {
+    padding: 80px 20px;
+    text-align: center;
+    color: var(--white);
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    opacity: 0.95;
+}
+
+/* ==============================
+   PAGE HEADER
+   ============================== */
+
+.page-header {
+    padding: 60px 20px 40px;
+    text-align: center;
+    color: var(--white);
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.page-header p {
+    font-size: 1.1rem;
+    opacity: 0.95;
+}
+
+.page-header.ai-header .subtitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #FFD700;
+    margin-top: 10px;
+}
+
+/* ==============================
+   SECTIONS
+   ============================== */
+
+.reminders-section,
+.tools-section,
+.content-section {
+    padding: 40px 20px;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--white);
+    margin-bottom: 30px;
+}
+
+/* ==============================
+   CARDS
+   ============================== */
+
+.reminder-card,
+.tool-card,
+.calculator-card,
+.results-card,
+.info-card,
+.location-card,
+.prayer-times-card,
+.guide-card,
+.rules-card,
+.topics-card,
+.question-card,
+.answer-card,
+.examples-card,
+.disclaimer-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+}
+
+/* Reminder Card */
+.reminder-card {
+    max-width: 800px;
+    margin: 0 auto 20px;
+    text-align: center;
+}
+
+.reminder-text {
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--dark-blue);
+    margin-bottom: 15px;
+}
+
+.reminder-source {
+    font-size: 1rem;
+    color: var(--light-blue);
+    font-weight: 600;
+}
+
+/* Tools Grid */
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tool-card {
+    text-decoration: none;
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-align: center;
+}
+
+.tool-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.tool-card.ai-card {
+    border: 3px solid var(--light-blue);
+    background: linear-gradient(135deg, rgba(30, 136, 229, 0.1) 0%, rgba(255, 255, 255, 0.95) 100%);
+}
+
+.tool-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.tool-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: var(--dark-blue);
+}
+
+.tool-card p {
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+
+/* ==============================
+   ZAKAT CALCULATOR
+   ============================== */
+
+.zakat-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--dark-blue);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--light-blue);
+}
+
+.calculate-btn,
+.location-btn,
+.ask-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--light-blue) 0%, var(--dark-blue) 100%);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.calculate-btn:hover,
+.location-btn:hover,
+.ask-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(30, 136, 229, 0.4);
+}
+
+.results-card {
+    display: none;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.result-item:last-child {
+    border-bottom: none;
+}
+
+.result-item.zakat-amount {
+    background: linear-gradient(135deg, rgba(30, 136, 229, 0.1) 0%, rgba(10, 31, 68, 0.05) 100%);
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--dark-blue);
+}
+
+.info-section {
+    margin: 20px 0;
+}
+
+.info-section h3 {
+    color: var(--dark-blue);
+    margin-bottom: 10px;
+}
+
+.info-section ul {
+    margin-left: 20px;
+}
+
+.disclaimer {
+    background: #FFF3CD;
+    padding: 15px;
+    border-left: 4px solid #FFA500;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+/* ==============================
+   SALAH TIMES
+   ============================== */
+
+.salah-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.location-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.location-btn {
+    width: auto;
+    padding: 12px 20px;
+}
+
+.manual-location select,
+.calculation-method select,
+.asr-method select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    margin-top: 8px;
+    background: white;
+}
+
+.calculation-method,
+.asr-method {
+    margin: 20px 0;
+}
+
+.calculation-method label,
+.asr-method label {
+    font-weight: 600;
+    color: var(--dark-blue);
+    display: block;
+}
+
+.current-location {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.current-location h2 {
+    color: var(--dark-blue);
+    margin-bottom: 5px;
+}
+
+.current-location p {
+    color: var(--text-dark);
+    font-size: 1.1rem;
+}
+
+.prayer-times-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.prayer-time {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(10, 31, 68, 0.05) 0%, rgba(30, 136, 229, 0.05) 100%);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.prayer-time.current {
+    background: linear-gradient(135deg, var(--light-blue) 0%, var(--dark-blue) 100%);
+    color: var(--white);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-hover);
+}
+
+.prayer-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.prayer-time-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.next-prayer {
+    text-align: center;
+    padding: 20px;
+    background: #E3F2FD;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.next-prayer strong {
+    color: var(--light-blue);
+    font-size: 1.2rem;
+}
+
+/* ==============================
+   UMRAH GUIDE
+   ============================== */
+
+.umrah-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.guide-card h2 {
+    color: var(--dark-blue);
+    margin-bottom: 20px;
+}
+
+.guide-card h3 {
+    color: var(--light-blue);
+    margin: 15px 0 10px;
+}
+
+.guide-card ul,
+.guide-card ol {
+    margin-left: 25px;
+    margin-bottom: 15px;
+}
+
+.guide-card li {
+    margin-bottom: 8px;
+}
+
+.highlight {
+    background: linear-gradient(135deg, rgba(30, 136, 229, 0.1) 0%, rgba(10, 31, 68, 0.05) 100%);
+    padding: 15px;
+    border-left: 4px solid var(--light-blue);
+    border-radius: 5px;
+    font-weight: 600;
+    margin: 15px 0;
+}
+
+.dua-box {
+    background: #F0F8FF;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 2px solid var(--light-blue);
+}
+
+.dua-box h4 {
+    color: var(--dark-blue);
+    margin-bottom: 10px;
+}
+
+.arabic {
+    font-size: 1.5rem;
+    text-align: right;
+    direction: rtl;
+    color: var(--dark-blue);
+    line-height: 2;
+    margin: 15px 0;
+}
+
+.translation {
+    font-style: italic;
+    color: var(--text-dark);
+    margin-top: 10px;
+}
+
+.mistakes-card {
+    border: 3px solid #FFA500;
+    background: linear-gradient(135deg, rgba(255, 165, 0, 0.1) 0%, rgba(255, 255, 255, 0.95) 100%);
+}
+
+/* ==============================
+   AI Q&A
+   ============================== */
+
+.ai-qa-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.rules-card {
+    border: 3px solid #FFA500;
+    background: linear-gradient(135deg, rgba(255, 165, 0, 0.1) 0%, rgba(255, 255, 255, 0.95) 100%);
+}
+
+.rules-card h2 {
+    color: var(--dark-blue);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.rules-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.rule-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.rule-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.rule-item p {
+    margin: 0;
+}
+
+.topics-card h2 {
+    color: var(--dark-blue);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.topic-item {
+    background: linear-gradient(135deg, rgba(10, 31, 68, 0.05) 0%, rgba(30, 136, 229, 0.05) 100%);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--dark-blue);
+}
+
+.question-card h2 {
+    color: var(--dark-blue);
+    margin-bottom: 20px;
+}
+
+.question-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+    margin-bottom: 15px;
+}
+
+.question-input:focus {
+    outline: none;
+    border-color: var(--light-blue);
+}
+
+.loading-card {
+    text-align: center;
+    padding: 40px;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--light-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.answer-card h2 {
+    color: var(--dark-blue);
+    margin-bottom: 20px;
+}
+
+.answer-section {
+    margin-bottom: 25px;
+}
+
+.answer-section h3 {
+    color: var(--light-blue);
+    margin-bottom: 15px;
+}
+
+.answer-content,
+.references-content,
+.notes-content {
+    background: #F9F9F9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid var(--light-blue);
+}
+
+.examples-card h2 {
+    color: var(--dark-blue);
+    margin-bottom: 20px;
+}
+
+.examples-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.example-item {
+    padding: 15px;
+    background: linear-gradient(135deg, rgba(30, 136, 229, 0.05) 0%, rgba(10, 31, 68, 0.02) 100%);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.example-item:hover {
+    background: linear-gradient(135deg, rgba(30, 136, 229, 0.1) 0%, rgba(10, 31, 68, 0.05) 100%);
+    border-color: var(--light-blue);
+    transform: translateX(5px);
+}
+
+.disclaimer-card {
+    background: #FFF3CD;
+    border-left: 4px solid #FFA500;
+}
+
+.disclaimer-card h3 {
+    color: var(--dark-blue);
+    margin-bottom: 15px;
+}
+
+.disclaimer-card ul {
+    margin-left: 20px;
+}
+
+.disclaimer-card li {
+    margin-bottom: 8px;
+}
+
+/* ==============================
+   FOOTER
+   ============================== */
+
+.footer {
+    background: rgba(10, 31, 68, 0.95);
+    color: var(--white);
+    padding: 40px 20px 20px;
+    margin-top: 60px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto 30px;
+}
+
+.footer-section h3 {
+    margin-bottom: 15px;
+    color: var(--white);
+}
+
+.footer-section p {
+    line-height: 1.8;
+    opacity: 0.9;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    opacity: 0.8;
+}
+
+/* ==============================
+   RESPONSIVE
+   ============================== */
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .page-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .tools-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .prayer-times-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .topics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.5rem;
+    }
+
+    .prayer-times-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .prayer-times-card {
+        padding: 15px;
+    }
+
+    .prayer-time {
+        padding: 10px;
+    }
+
+    .prayer-name {
+        font-size: 1rem;
+        margin-bottom: 5px;
+    }
+
+    .prayer-time-value {
+        font-size: 1.2rem;
+    }
+}

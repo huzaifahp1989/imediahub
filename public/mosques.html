@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Leicester Mosques Directory - Islamic Utility Hub">
+    <title>Leicester Mosques - Islamic Utility Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .mosques-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .search-box {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .search-box input {
+            width: 100%;
+            max-width: 500px;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid #2c5f4f;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            border-color: #1a8754;
+            box-shadow: 0 0 10px rgba(26, 135, 84, 0.2);
+        }
+
+        .mosque-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .mosque-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+        }
+
+        .mosque-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .mosque-card h3 {
+            color: #2c5f4f;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .mosque-card .address {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: start;
+            gap: 8px;
+        }
+
+        .mosque-card .postcode {
+            color: #1a8754;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            display: inline-block;
+            background: #e8f5e9;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .prayer-times {
+            margin: 15px 0;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .prayer-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 0.9rem;
+        }
+
+        .prayer-row span {
+            color: #666;
+        }
+
+        .prayer-row strong {
+            color: #2c5f4f;
+            font-weight: 600;
+        }
+
+        .no-times {
+            color: #999;
+            font-size: 0.85rem;
+            font-style: italic;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .mosque-card .map-link {
+            display: inline-block;
+            margin-top: 12px;
+            color: #1a8754;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .mosque-card .map-link:hover {
+            color: #2c5f4f;
+            text-decoration: underline;
+        }
+
+        .stats-bar {
+            background: linear-gradient(135deg, #2c5f4f 0%, #1a8754 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(26, 135, 84, 0.2);
+        }
+
+        .stats-bar h2 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .stats-bar p {
+            margin: 8px 0 0 0;
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .filter-tag {
+            padding: 8px 16px;
+            background: #f5f5f5;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-tag:hover {
+            background: #e8f5e9;
+            border-color: #1a8754;
+        }
+
+        .filter-tag.active {
+            background: #1a8754;
+            color: white;
+            border-color: #1a8754;
+        }
+
+        @media (max-width: 768px) {
+            .mosque-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar h2 {
+                font-size: 1.5rem;
+            }
+
+            .search-box input {
+                font-size: 14px;
+                padding: 12px 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mosques-container {
+                padding: 15px;
+            }
+
+            .mosque-card {
+                padding: 15px;
+            }
+
+            .mosque-card h3 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Islamic Utility Hub</div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="zakat.html" class="nav-link">Zakat Calculator</a></li>
+                <li><a href="salah-times.html" class="nav-link">Salah Times</a></li>
+                <li><a href="mosques.html" class="nav-link active">Mosques</a></li>
+                <li><a href="today-prayers.html" class="nav-link">Today's Prayers</a></li>
+                <li><a href="umrah-guide.html" class="nav-link">Umrah Guide</a></li>
+                <li><a href="ai-qa.html" class="nav-link ai-highlight">📚 AI Islamic Q&A</a></li>
+                <li><a href="events.html" class="nav-link">📅 Events</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="page-header">
+        <div class="container">
+            <h1>🕌 Leicester Mosques</h1>
+            <p>Complete directory of mosques and prayer facilities in Leicester</p>
+            <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">📅 Today's Prayer Times - January 7, 2026</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="mosques-container">
+            <!-- Statistics Bar -->
+            <div class="stats-bar">
+                <h2 id="totalMosques">0</h2>
+                <p>Mosques in Leicester</p>
+            </div>
+
+            <!-- Search Box -->
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Search mosques by name, address, or postcode...">
+            </div>
+
+            <!-- Filter Tags -->
+            <div class="filter-tags" id="filterTags">
+                <div class="filter-tag active" data-filter="all">All Mosques</div>
+                <div class="filter-tag" data-filter="masjid">Masjid</div>
+                <div class="filter-tag" data-filter="madrasah">Madrasah</div>
+                <div class="filter-tag" data-filter="centre">Centre</div>
+            </div>
+
+            <!-- Mosque Grid -->
+            <div class="mosque-grid" id="mosquesGrid">
+                <!-- Mosques will be dynamically loaded here -->
+            </div>
+
+            <!-- No Results Message -->
+            <div class="no-results" id="noResults" style="display: none;">
+                <p>😔 No mosques found matching your search.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Islamic Utility Hub. All rights reserved.</p>
+            <p>Data source: <a href="https://www.salaahtimes.co.uk/Mosque" target="_blank" style="color: #1a8754;">SalaahTimes Leicester</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="mosques.js"></script>
+</body>
+</html>
