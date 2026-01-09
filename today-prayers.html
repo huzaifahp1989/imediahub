@@ -262,51 +262,58 @@
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .prayers-container {
-                padding: 15px 10px;
+                padding: 15px 5px;
             }
 
             .table-view {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
+                overflow-x: hidden;
                 border-radius: 8px;
             }
 
             .prayers-table {
                 min-width: 100%;
-                font-size: 0.75rem;
+                width: 100%;
+                table-layout: fixed;
             }
 
             .prayers-table colgroup col:first-child {
-                width: 35%;
+                width: 25%;
             }
 
             .prayers-table colgroup col {
-                width: 13%;
+                width: 15%;
             }
 
             .prayers-table th,
             .prayers-table td {
-                padding: 8px 4px;
-                font-size: 0.75rem;
+                padding: 8px 1px;
+                font-size: 0.65rem;
+                white-space: normal;
+                text-align: center;
+                overflow: hidden;
+                letter-spacing: -0.5px;
             }
 
             .prayers-table th:first-child,
             .prayers-table td:first-child {
-                padding: 8px 6px;
+                padding: 8px 4px;
+                text-align: left;
             }
 
             .prayers-table th {
-                font-size: 0.7rem;
-                padding: 10px 4px;
+                font-size: 0.65rem;
+                padding: 8px 2px;
+                vertical-align: bottom;
             }
 
             .mosque-name {
-                font-size: 0.75rem;
-                line-height: 1.2;
+                font-size: 0.7rem;
+                line-height: 1.1;
+                font-weight: 600;
             }
 
             .prayer-time {
-                font-size: 0.72rem;
+                font-size: 0.7rem;
             }
 
             .date-header h2 {
@@ -340,7 +347,20 @@
             .stat-item {
                 width: 100%;
             }
+
+            /* Toggle text visibility */
+            .desktop-text { display: none; }
+            .mobile-text { display: inline; }
+            
+            /* Squeeze text to prevent overlap */
+            .prayers-table th, 
+            .prayers-table td {
+                letter-spacing: -0.5px;
+            }
         }
+        
+        /* Default state (Desktop) */
+        .mobile-text { display: none; }
 
         @media (max-width: 480px) {
             .prayers-container {
@@ -453,11 +473,11 @@
                     </colgroup>
                     <thead>
                         <tr>
-                            <th>Masjid</th>
+                            <th><span class="desktop-text">Masjid</span><span class="mobile-text">🕌</span></th>
                             <th>Fajr</th>
-                            <th>Dhuhr</th>
+                            <th><span class="desktop-text">Dhuhr</span><span class="mobile-text">Dhr</span></th>
                             <th>Asr</th>
-                            <th>Maghrib</th>
+                            <th><span class="desktop-text">Maghrib</span><span class="mobile-text">Mag</span></th>
                             <th>Isha</th>
                         </tr>
                     </thead>
@@ -488,6 +508,7 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="mosques.js"></script>
     <script src="today-prayers.js"></script>
 </body>
 </html>

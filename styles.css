@@ -857,6 +857,24 @@ body {
     }
 
     .prayer-times-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .prayer-times-card {
+        padding: 15px;
+    }
+
+    .prayer-time {
+        padding: 10px;
+    }
+
+    .prayer-name {
+        font-size: 1rem;
+        margin-bottom: 5px;
+    }
+
+    .prayer-time-value {
+        font-size: 1.2rem;
     }
 }

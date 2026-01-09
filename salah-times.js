@@ -695,8 +695,8 @@ function updateMosqueTimes() {
 
 // Display mosque timetable from static data
 function displayMosqueTimetable(mosque) {
-    if (!mosque || !mosque.timetable) {
-        console.error('❌ Invalid mosque timetable data');
+    if (!mosque) {
+        console.error('❌ Invalid mosque data');
         return;
     }
     
@@ -708,11 +708,26 @@ function displayMosqueTimetable(mosque) {
                    String(today.getMonth() + 1).padStart(2, '0') + '-' + 
                    String(today.getDate()).padStart(2, '0');
     
-    const todaysTimes = mosque.timetable[dateStr];
+    let todaysTimes = null;
+
+    // Try to get times from detailed timetable
+    if (mosque.timetable && mosque.timetable[dateStr]) {
+        todaysTimes = mosque.timetable[dateStr];
+    } 
+    // Fallback to static times (from mosques.js data)
+    else if (mosque.fajr && mosque.fajr !== '--') {
+        todaysTimes = {
+            Fajr: mosque.fajr,
+            Dhuhr: mosque.dhuhr,
+            Asr: mosque.asr,
+            Maghrib: mosque.maghrib,
+            Isha: mosque.isha
+        };
+    }
     
     if (!todaysTimes) {
         console.error(`❌ No times found for ${dateStr}`);
-        alert('Prayer times not available for today');
+        alert('Prayer times not available for this mosque');
         return;
     }
     
@@ -783,9 +798,154 @@ function onCityChange() {
     }
 }
 
+// Populate mosque dropdown from mosques.js data
+let mosqueLoadRetries = 0;
+const MAX_RETRIES = 20; // 10 seconds total
+
+function populateMosqueDropdown() {
+    console.log('🔄 populateMosqueDropdown called');
+    const mosqueSelect = document.getElementById('mosqueSelect');
+    if (!mosqueSelect) {
+        console.error('❌ mosqueSelect element not found');
+        return;
+    }
+
+    // Check if mosques data is available
+    if (typeof window.mosques === 'undefined' || !Array.isArray(window.mosques)) {
+        mosqueLoadRetries++;
+        if (mosqueLoadRetries > MAX_RETRIES) {
+            console.error('❌ Failed to load mosques data after multiple retries');
+            const debugEl = document.getElementById('mosqueDebug');
+            if (debugEl) {
+                debugEl.textContent = '❌ Error loading mosque list. Please refresh.';
+                debugEl.style.color = 'red';
+            }
+            // Fallback: Ensure at least hardcoded mosques are shown
+            return;
+        }
+        
+        console.warn(`⚠️ Mosques data not loaded yet (Attempt ${mosqueLoadRetries}/${MAX_RETRIES}). Retrying in 500ms...`);
+        const debugEl = document.getElementById('mosqueDebug');
+        if (!debugEl) {
+            const newDebug = document.createElement('div');
+            newDebug.id = 'mosqueDebug';
+            newDebug.style.fontSize = '0.8rem';
+            newDebug.style.color = '#e67e22';
+            newDebug.style.marginTop = '5px';
+            mosqueSelect.parentNode.appendChild(newDebug);
+            newDebug.textContent = '⏳ Loading mosques data...';
+        } else {
+             debugEl.textContent = `⏳ Loading mosques data... (${mosqueLoadRetries})`;
+        }
+        
+        setTimeout(populateMosqueDropdown, 500);
+        return;
+    }
+
+    const mosquesList = [...window.mosques];
+    console.log(`📥 Initial mosques from data: ${mosquesList.length}`);
+
+    // Add missing hardcoded mosques to the list
+    Object.values(leicesterMosques).forEach(hardcodedMosque => {
+        // Check if this mosque is already in the list (by name)
+        const exists = mosquesList.some(m => m.name === hardcodedMosque.name);
+        
+        if (!exists) {
+            console.log(`➕ Adding hardcoded mosque to dropdown: ${hardcodedMosque.name}`);
+            mosquesList.push(hardcodedMosque);
+        }
+    });
+
+    console.log(`📥 Total mosques to populate: ${mosquesList.length}`);
+    
+    // Debug info
+    let debugEl = document.getElementById('mosqueDebug');
+    if (!debugEl) {
+        debugEl = document.createElement('div');
+        debugEl.id = 'mosqueDebug';
+        debugEl.style.fontSize = '0.8rem';
+        debugEl.style.color = '#1a8754';
+        debugEl.style.marginTop = '5px';
+        mosqueSelect.parentNode.appendChild(debugEl);
+    }
+    debugEl.textContent = `✅ Loaded ${mosquesList.length} mosques into dropdown`;
+
+    // Save current selection if any
+    const currentSelection = mosqueSelect.value;
+
+    // Reset dropdown but keep General option logic
+    mosqueSelect.innerHTML = '';
+    
+    // Create General option
+    const opt = document.createElement('option');
+    opt.value = 'general';
+    opt.textContent = 'General Times (Aladhan API)';
+    mosqueSelect.appendChild(opt);
+
+    // Merge mosques into leicesterMosques and create options
+    // Sort alphabetically
+    const sortedMosques = [...mosquesList].sort((a, b) => a.name.localeCompare(b.name));
+    
+    sortedMosques.forEach(mosque => {
+        // Create a slug from name
+        let slug = mosque.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        
+        // Manual mapping for known existing keys in leicesterMosques to preserve detailed timetables
+        let existingKey = null;
+        if (mosque.name === 'Jame Masjid') existingKey = 'jame-masjid';
+        else if (mosque.name === 'Al Ehsaan Academy') existingKey = 'ehsaan-academy';
+        else if (mosque.name === 'As-Salaam (The Peace Centre)') existingKey = 'as-salaam-peace';
+        else if (mosque.name.includes("Baytul") && mosque.name.includes("Ilm")) existingKey = 'baytul-ilm';
+        else if (mosque.name === 'Madani School Masjid') existingKey = 'madani-school';
+        else if (mosque.name === 'Majlis e Dawatul Haq') existingKey = 'majlis-e-dawatul-haq';
+        
+        // If no manual map, check if name matches existing entry
+        if (!existingKey) {
+            const foundKey = Object.keys(leicesterMosques).find(k => leicesterMosques[k].name === mosque.name);
+            if (foundKey) existingKey = foundKey;
+        }
+
+        if (existingKey) {
+            slug = existingKey;
+        } else {
+            // Add new entry to leicesterMosques if not exists
+            if (!leicesterMosques[slug]) {
+                leicesterMosques[slug] = mosque;
+            } else {
+                // If slug exists but names differ, modify slug
+                let i = 1;
+                let originalSlug = slug;
+                while (leicesterMosques[slug] && leicesterMosques[slug].name !== mosque.name) {
+                    slug = originalSlug + '-' + i;
+                    i++;
+                }
+                if (!leicesterMosques[slug]) {
+                    leicesterMosques[slug] = mosque;
+                }
+            }
+        }
+
+        // Add option to dropdown
+        const option = document.createElement('option');
+        option.value = slug;
+        option.textContent = mosque.name;
+        mosqueSelect.appendChild(option);
+    });
+
+    // Restore selection if possible, else default to jame-masjid
+    if (currentSelection && Array.from(mosqueSelect.options).some(o => o.value === currentSelection)) {
+        mosqueSelect.value = currentSelection;
+    } else {
+        mosqueSelect.value = 'jame-masjid';
+    }
+}
+
 // Initialize with Leicester by default
 document.addEventListener('DOMContentLoaded', () => {
     console.log('⏳ Initializing Salah Times page...');
+    
+    // Populate dropdown first
+    populateMosqueDropdown();
     
     // Set Leicester as default city
     const citySelect = document.getElementById('citySelect');

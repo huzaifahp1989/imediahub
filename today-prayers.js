@@ -11,13 +11,43 @@ let stats = {
     latestIsha: '--'
 };
 
-// Fetch prayer times from API
+// Fetch prayer times from API or local data
 async function fetchPrayerTimes() {
     try {
         // Show loading state
         document.getElementById('prayersTableBody').innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px;">Loading prayer times...</td></tr>';
         document.getElementById('cardView').innerHTML = '<p style="text-align: center; padding: 40px;">Loading prayer times...</p>';
         
+        // 1. Try to use local mosques.js data first (fastest and most reliable for static site)
+        // Wait for mosques data if not immediately available
+        let retries = 0;
+        const MAX_RETRIES = 10; // 5 seconds
+        
+        while (typeof window.mosques === 'undefined' && retries < MAX_RETRIES) {
+            console.log(`Waiting for mosques data... (${retries + 1}/${MAX_RETRIES})`);
+            await new Promise(resolve => setTimeout(resolve, 500));
+            retries++;
+        }
+
+        if (typeof window.mosques !== 'undefined' && Array.isArray(window.mosques) && window.mosques.length > 0) {
+            console.log(`✅ Using local mosques.js data (${window.mosques.length} mosques)`);
+            prayerTimesData = window.mosques;
+            
+            // Set date to today
+            currentDate = new Date().toLocaleDateString('en-GB', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            updateStatsAndRender();
+            return;
+        }
+
+        console.warn('⚠️ Local mosques data not found after retries. Trying API...');
+
+        // 2. Fallback to API if local data missing
         // Determine API URL based on environment
         const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
             ? '/api/prayer-times-fallback.json'  // Use fallback for local dev
@@ -35,10 +65,7 @@ async function fetchPrayerTimes() {
                 day: 'numeric'
             });
             
-            stats.totalMosques = data.totalMosques || prayerTimesData.length;
-            stats.earliestFajr = data.earliestFajr || '--';
-            stats.latestIsha = data.latestIsha || '--';
-            
+            updateStatsAndRender();
             console.log(`Loaded ${prayerTimesData.length} mosques from API`);
         } else {
             throw new Error('Invalid API response');
@@ -48,6 +75,32 @@ async function fetchPrayerTimes() {
         await loadFallbackData();
     }
 }
+
+function updateStatsAndRender() {
+    stats.totalMosques = prayerTimesData.length;
+    
+    // Calculate earliest Fajr and latest Isha
+    // Simple string comparison for HH:MM format works for finding min/max in same day usually
+    // But better to be robust
+    const validFajrs = prayerTimesData.map(m => m.fajr).filter(t => t && t.includes(':')).sort();
+    const validIshas = prayerTimesData.map(m => m.isha).filter(t => t && t.includes(':')).sort();
+    
+    stats.earliestFajr = validFajrs.length > 0 ? validFajrs[0] : '--';
+    stats.latestIsha = validIshas.length > 0 ? validIshas[validIshas.length - 1] : '--';
+    
+    // Update UI
+    document.getElementById('currentDate').textContent = currentDate;
+    updateStatistics();
+    
+    // Initial render
+    filteredData = [...prayerTimesData];
+    if (currentView === 'table') {
+        renderTableView();
+    } else {
+        renderCardView();
+    }
+}
+
 
 // Load fallback data if API fails
 async function loadFallbackData() {

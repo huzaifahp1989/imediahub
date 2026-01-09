@@ -1,6 +1,7 @@
 {
   "name": "islamic-utility-hub",
   "version": "1.0.0",
+  "type": "module",
   "description": "A clean, professional Islamic utilities website with Zakat calculator, Salah times, Umrah guide, and AI Q&A interface",
   "main": "index.html",
   "scripts": {
@@ -30,12 +31,13 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "cheerio": "^1.1.2"
+    "cheerio": "^1.1.2",
+    "node-fetch": "^3.3.0"
   },
   "devDependencies": {
     "firebase-tools": "^13.0.0"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   }
 }
