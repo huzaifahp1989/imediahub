@@ -1,7 +1,6 @@
 {
   "version": 2,
   "name": "islamic-utility-hub",
-  "alias": ["islamic-utility-hub.vercel.app"],
   "outputDirectory": "public",
   "functions": {
     "api/**/*.js": {
